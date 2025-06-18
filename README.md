@@ -152,13 +152,7 @@ Contributions, issues, and feature requests are welcome!
 
 ## 📃 License
 
-MIT License © 2025 [Kaustubh Salodkar](https://github.com/lileskimo)
-
----
-
-## 📬 Contact
-
-**Kaustubh Salodkar** — [GitHub](https://github.com/lileskimo)
+MIT License © 2025 [lileskimo](https://github.com/lileskimo)
 
 ---
 
