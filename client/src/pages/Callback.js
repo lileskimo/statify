@@ -5,13 +5,15 @@ function Callback() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const hashParams = new URLSearchParams(window.location.hash.substring(1))
-    const token = hashParams.get('access_token')
+    // CHANGE: Read from query string, not hash
+    const params = new URLSearchParams(window.location.search)
+    const token = params.get('access_token')
 
     if (token) {
-      navigate(`/visualizer?access_token=${token}`)
+      sessionStorage.setItem('spotify_access_token', token)
+      navigate('/visualizer')
     } else {
-      navigate('/')  // if no token found
+      navigate('/')
     }
   }, [navigate])
 
