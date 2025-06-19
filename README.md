@@ -33,21 +33,30 @@ Built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, **Expres
 
 ---
 
-## 🖥️ Tech Stack
+## Technical Details
 
-**Frontend**
-- React
-- React Router
-- React Three Fiber
-- Three.js
-- @react-three/drei (for 3D helpers and HTML overlays)
-- Axios
+### Frontend
 
-**Backend**
-- Node.js
-- Express
-- spotify-web-api-node
-- dotenv
+- **Framework:** React
+- **3D Visualization:** Three.js via [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) and [@react-three/drei](https://github.com/pmndrs/drei)
+- **Routing:** react-router-dom
+- **HTTP:** axios
+- **Styling:** CSS (custom, responsive, dark theme)
+
+### Backend
+
+- **Framework:** Node.js + Express
+- **Spotify API:** [spotify-web-api-node](https://github.com/thelinmichael/spotify-web-api-node)
+- **CORS:** Enabled for local development
+- **OAuth Flow:** Handles login, callback, and token exchange
+
+### Data Flow
+
+- **OAuth:** User logs in via Spotify, backend exchanges code for access token, and redirects to frontend with token.
+- **Session:** Access token is stored in sessionStorage for the browser session.
+- **Data Fetching:** Frontend fetches user profile and top tracks (short, medium, long term) via backend, which aggregates and returns all necessary fields.
+- **Visualization:** Tracks are grouped by genre, colored, and positioned in 3D space. Genres with more tracks are spread further out, and spheres are sized by listening score.
+- **Highlights Card:** Shows top genre and top song, with a vibrant background and your Spotify display name.
 
 ---
 
@@ -161,65 +170,42 @@ MIT License © 2025 [lileskimo](https://github.com/lileskimo)
 
 ---
 
-## 📌 To-Do / Future Plans
+**Statify is not affiliated with or endorsed by Spotify.**
 
-- 🎥 Add animated orbit demo GIF
-- 🌐 Deploy to Netlify / Vercel with environment configs
-- 📱 Add mobile layout optimization
-- 🎨 Add genre color legend overlay
-
----
 
 ## 🧑‍💻 How It Works
 
 - **Spotify Login:**  
-  The app uses Spotify OAuth to access your top tracks and artists. No data is stored on the server.
+  Statify uses Spotify's OAuth authentication flow. When you log in, you grant the app permission to access your top tracks and recently played tracks. Your access token is stored only in your browser session and is never shared or stored on any server.
 
-- **Data Fetching:**  
-  The client fetches your top tracks for three time ranges (short, medium, long term) and computes a "listen score" for each track.
+- **Data Fetching & Aggregation:**  
+  After authentication, the backend fetches your top tracks from Spotify for three time ranges: short term, medium term, and long term. Each track is assigned a "listen score" based on its ranking and frequency across these periods, using a weighted formula to reflect your true listening habits.
 
 - **Genre Assignment:**  
-  Each track is assigned a genre based on its artist's top genre.
+  Each track is assigned a genre based on the top genre of its primary artist. The backend fetches genre information for all unique artists in your top tracks, ensuring accurate genre mapping.
 
-- **Track Positioning:**  
-  Each track is mapped to a position in 3D space based on its index and genre, forming orbits around the center.
+- **3D Track Positioning:**  
+  Tracks are grouped by genre and distributed in 3D space using a custom orbit algorithm. Each genre occupies a distinct sector of the orbit, and genres with more tracks are spread further outwards to reduce crowding. The position of each track within its genre's region is randomized but stable, creating a visually appealing and informative soundscape.
 
-- **Sphere Sizing:**  
-  The size of each sphere is proportional to the track’s listen score.
+- **Dynamic Sphere Sizing:**  
+  The size of each sphere is directly proportional to the track’s listen score, visually emphasizing your most-played tracks. Spheres are now 1.25x larger for improved visibility.
 
-- **Hover Detection:**  
-  An invisible, larger sphere (1.2x the visible radius) is used for easier hover detection.
+- **Enhanced Hover Detection:**  
+  For a smooth user experience, each visible sphere is paired with a slightly larger, invisible sphere (1.2x the visible radius) to make hover detection easier and more forgiving.
 
-- **Tooltip:**  
-  When hovering, a tooltip appears at the sphere’s position, showing detailed track info (name, artist, genre, listen score). Tooltips are rendered in 3D space using `<Html>` from Drei and do not block pointer events.
+- **Interactive Tooltips:**  
+  Hovering over a sphere displays a tooltip at the sphere’s 3D position, rendered using Drei's `<Html>` component. The tooltip shows detailed information: track name, artist, genre, and listen score. Tooltips are styled to match Spotify’s theme and do not block pointer events.
 
 - **Spotify Integration:**  
-  Clicking a sphere opens the track’s Spotify page in a new tab.
+  Clicking on a sphere opens the corresponding track’s Spotify page in a new browser tab, allowing you to listen instantly.
 
-- **Sidebar:**  
-  The right sidebar displays your top genre and summary information.
+- **Shareable Highlights Card:**  
+  The right sidebar displays a vibrant, shareable card featuring your Spotify display name, top genre, and top song. The card background uses a randomly generated, visually appealing gradient.
 
----
+- **Responsive Sidebar:**  
+  The sidebar is always visible on the right, summarizing your listening highlights and adapting to different screen sizes.
 
-## 🛠️ Customization
+- **Session & Account Handling:**  
+  Logging out clears your session and logs you out of Spotify, allowing you to safely switch accounts. All data is cleared from your browser session on logout or tab close.
 
-- **Tracks and Genres:**  
-  Pass your own `tracks` and `genres` data as props to the `OrbitVisualizer` component.
-
-- **Color Palette:**  
-  Modify the `colorPalette` array in `OrbitVisualizer.jsx` to change genre colors.
-
-- **Tooltip Styling:**  
-  Update the inline styles in the `<Html>` tooltip for a custom look.
-
-- **Orbit Logic:**  
-  You can adjust how orbits are calculated in `OrbitVisualizer.jsx`.
-
----
-
-*For more details, see the code in `src/components/OrbitVisualizer.jsx` and `src/pages/Visualizer.js`.*
-
----
-
-*Built with ❤️ using React Three Fiber
 
