@@ -18,7 +18,7 @@ const spotifyApi = new SpotifyWebApi({
 // Login Route
 app.get('/login', (req, res) => {
   const scopes = ['user-top-read', 'user-read-recently-played']
-  const authorizeURL = spotifyApi.createAuthorizeURL(scopes, 'some-state')
+  const authorizeURL = spotifyApi.createAuthorizeURL(scopes, 'some-state', true) // true = show_dialog
   res.redirect(authorizeURL)
 })
 
@@ -28,67 +28,95 @@ app.get('/callback', async (req, res) => {
   try {
     const data = await spotifyApi.authorizationCodeGrant(code)
     const access_token = data.body.access_token
-    res.redirect(`http://localhost:3000/visualizer?access_token=${access_token}`)
+    // FIX: Redirect to home with token in query string
+    res.redirect(`http://localhost:3000/?access_token=${access_token}`)
   } catch (err) {
     res.status(400).send('Spotify authorization failed')
   }
 })
 
 app.get('/tracks', async (req, res) => {
-  const token = req.headers.authorization
+  let token = req.headers.authorization
   if (!token) return res.status(401).send('Missing access token')
+  if (token.startsWith('Bearer ')) token = token.slice(7)
 
-  spotifyApi.setAccessToken(token)
+  const spotifyApiInstance = new SpotifyWebApi({
+    clientId: process.env.SPOTIFY_CLIENT_ID,
+    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+    redirectUri: process.env.SPOTIFY_REDIRECT_URI
+  })
+  spotifyApiInstance.setAccessToken(token)
 
   try {
+    // Fetch top tracks for all time ranges
     const [short, medium, long] = await Promise.all([
-      spotifyApi.getMyTopTracks({ time_range: 'short_term', limit: 50 }),
-      spotifyApi.getMyTopTracks({ time_range: 'medium_term', limit: 50 }),
-      spotifyApi.getMyTopTracks({ time_range: 'long_term', limit: 50 })
+      spotifyApiInstance.getMyTopTracks({ time_range: 'short_term', limit: 50 }),
+      spotifyApiInstance.getMyTopTracks({ time_range: 'medium_term', limit: 50 }),
+      spotifyApiInstance.getMyTopTracks({ time_range: 'long_term', limit: 50 })
     ])
 
-    const trackMap = new Map()
+    // Build track map and artist set
+    const trackMap = {}
+    const artistSet = new Set()
 
-    const addTracks = (tracks, weight) => {
-      tracks.forEach(track => {
-        const id = track.id
-        if (!trackMap.has(id)) {
-          trackMap.set(id, {
+    const processTracks = (tracks, rankKey) => {
+      tracks.forEach((track, index) => {
+        if (!trackMap[track.id]) {
+          trackMap[track.id] = {
+            id: track.id,
             name: track.name,
-            popularity: track.popularity,
-            artistId: track.artists[0].id,
-            listenScore: 0
-          })
+            artistName: track.artists[0].name,
+            external_urls: track.external_urls,
+            artist_id: track.artists[0].id,
+            albumImage: (track.album.images && track.album.images[1]?.url) || (track.album.images && track.album.images[0]?.url) || '', // <-- add this
+            short_rank: 75,
+            medium_rank: 75,
+            long_rank: 75
+          }
+          artistSet.add(track.artists[0].id)
         }
-        const current = trackMap.get(id)
-        current.listenScore += weight
+        trackMap[track.id][rankKey] = index + 1
       })
     }
 
-    // Apply your formula weights
-    addTracks(short.body.items, 0.375)
-    addTracks(medium.body.items, 0.325)
-    addTracks(long.body.items, 0.3)
+    processTracks(short.body.items, 'short_rank')
+    processTracks(medium.body.items, 'medium_rank')
+    processTracks(long.body.items, 'long_rank')
 
-    // Fetch artist genres in parallel
-    const trackList = Array.from(trackMap.values())
-    const artistIds = [...new Set(trackList.map(t => t.artistId))]
-
-    const artistResponses = await Promise.all(
-      artistIds.map(id => spotifyApi.getArtist(id))
-    )
-
-    const artistGenres = {}
-    artistResponses.forEach(res => {
-      artistGenres[res.body.id] = res.body.genres[0] || 'unknown'
+    // Fetch artist genres in batches of 50
+    const artistIds = Array.from(artistSet)
+    const artistChunks = []
+    for (let i = 0; i < artistIds.length; i += 50) {
+      artistChunks.push(spotifyApiInstance.getArtists(artistIds.slice(i, i + 50)))
+    }
+    const artistResults = await Promise.all(artistChunks)
+    const artistGenreMap = {}
+    artistResults.forEach(res => {
+      res.body.artists.forEach(artist => {
+        artistGenreMap[artist.id] = artist.genres.length ? artist.genres[0] : 'unknown'
+      })
     })
 
-    const finalTracks = trackList.map(t => ({
-      name: t.name,
-      popularity: t.popularity,
-      genre: artistGenres[t.artistId],
-      listenScore: t.listenScore
-    }))
+    // Calculate listenScore and build final tracks array
+    const finalTracks = Object.values(trackMap).map(track => {
+      const listenScore = Math.round(
+        0.4 * (100 - track.short_rank) +
+        0.32 * (100 - track.medium_rank) +
+        0.28 * (100 - track.long_rank)
+      )
+      return {
+        id: track.id,
+        name: track.name,
+        artistName: track.artistName,
+        external_urls: track.external_urls,
+        listenScore,
+        genre: artistGenreMap[track.artist_id] || 'unknown',
+        albumImage: track.albumImage // <-- add this
+      }
+    })
+
+    // Sort by listenScore descending
+    finalTracks.sort((a, b) => b.listenScore - a.listenScore)
 
     res.json(finalTracks)
   } catch (err) {
@@ -97,5 +125,25 @@ app.get('/tracks', async (req, res) => {
   }
 })
 
+app.get('/me', async (req, res) => {
+  let token = req.headers.authorization
+  if (!token) return res.status(401).send('Missing access token')
+  if (token.startsWith('Bearer ')) token = token.slice(7)
+
+  const spotifyApiInstance = new SpotifyWebApi({
+    clientId: process.env.SPOTIFY_CLIENT_ID,
+    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+    redirectUri: process.env.SPOTIFY_REDIRECT_URI
+  })
+  spotifyApiInstance.setAccessToken(token)
+
+  try {
+    const me = await spotifyApiInstance.getMe()
+    res.json(me.body)
+  } catch (err) {
+    console.error(err)
+    res.status(400).send('Failed to fetch user profile')
+  }
+})
 
 app.listen(8888, () => console.log('Server running on port 8888'))
