@@ -7,7 +7,7 @@ function Navbar() {
   const handleLogout = () => {
     sessionStorage.removeItem('spotify_access_token')
     navigate('/')
-    window.location.reload() // Ensures all state is cleared
+    window.location.reload() 
   }
 
   return (
@@ -16,8 +16,14 @@ function Navbar() {
         <Link to="/" style={{ color: '#1DB954', fontWeight: 700, fontSize: '1.3rem', letterSpacing: '0.03em' }}>
           Statify
         </Link>
+        <Link to="/" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
+          Home
+        </Link>
         <Link to="/visualizer" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
           Visualizer
+        </Link>
+        <Link to="/topsongs" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
+          Top Songs
         </Link>
       </div>
       <div style={{ fontSize: '1rem', color: '#b3b3b3', fontWeight: 400 }}>
@@ -40,6 +46,5 @@ function Navbar() {
     </nav>
   )
 }
-//helo
 
 export default Navbar
