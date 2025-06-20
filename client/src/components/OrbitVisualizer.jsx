@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Sphere, Html } from '@react-three/drei'
 import { useState, useEffect, useMemo, useRef } from 'react'
+import { colorPalette, getGenreColor } from '../utils/genreColors'
 
 function OrbitVisualizer({ tracks, genres, topGenre }) {
   const [hoveredTrack, setHoveredTrack] = useState(null)
@@ -41,18 +42,6 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
     const base = Math.min(windowSize.width - 300, windowSize.height) / 100
     return [base * 1.5, base * 2.2, base * 3, base * 4]
   }, [windowSize])
-
-  const colorPalette = [
-    '#1DB954', '#F44336', '#FFC107', '#9C27B0', '#00BCD4',
-    '#FF9800', '#3F51B5', '#8BC34A', '#795548', '#E91E63',
-    '#673AB7', '#CDDC39', '#FF5722', '#03A9F4', '#607D8B',
-    '#C2185B', '#7B1FA2', '#512DA8', '#303F9F', '#1976D2',
-    '#0288D1', '#0097A7', '#00796B', '#388E3C', '#689F38',
-    '#AFB42B', '#FBC02D', '#FFA000', '#F57C00', '#E64A19',
-    '#5D4037', '#616161', '#455A64', '#00C853', '#AA00FF',
-    '#D50000', '#00B8D4', '#C6FF00', '#FFD600', '#FFAB00',
-    '#FF6D00', '#F50057', '#FF4081', '#64DD17', '#FF5252'
-  ]
 
   const genreColorMap = useMemo(() => {
     const map = {}
@@ -181,7 +170,7 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
                 32
               ]}
             >
-              <meshStandardMaterial color={genreColorMap[track.genre.toLowerCase().replace(/\s/g, '')] || fallbackColor} />
+              <meshStandardMaterial color={getGenreColor(track.genre)} />
             </Sphere>
           </group>
         ))}
@@ -191,7 +180,7 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
             <div style={{
               background: '#181818',
               color: '#fff',
-              padding: '18px 32px', 
+              padding: '18px 32px',
               borderRadius: '16px',
               minWidth: '200px',
               width: 'auto',
@@ -206,11 +195,22 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
               border: '1px solid #1DB954',
               pointerEvents: 'none'
             }}>
-              <div style={{ fontSize: '22px', fontWeight: '700', marginBottom: '12px' }}>
-                {hoveredTrack.name}
-              </div>
-              <div style={{ fontSize: '18px', fontWeight: '500', marginBottom: '8px' }}>
-                {hoveredTrack.artistName}
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
+                {hoveredTrack.albumImage && (
+                  <img
+                    src={hoveredTrack.albumImage}
+                    alt={hoveredTrack.name}
+                    style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', marginRight: 16 }}
+                  />
+                )}
+                <div>
+                  <div style={{ fontSize: '22px', fontWeight: '700', marginBottom: '4px' }}>
+                    {hoveredTrack.name}
+                  </div>
+                  <div style={{ fontSize: '18px', fontWeight: '500', marginBottom: '4px' }}>
+                    {hoveredTrack.artistName}
+                  </div>
+                </div>
               </div>
               <div style={{ fontSize: '16px', marginBottom: '6px' }}>
                 <span style={{ color: '#1DB954', fontWeight: '600' }}>Genre: </span>
