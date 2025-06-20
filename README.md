@@ -24,12 +24,12 @@ Built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, **Expres
   - 🎨 Color represents **genre** (unique color per genre, customizable palette)
   - 📏 Size represents **listening frequency** (sphere size scales with listen score)
   - 🌍 Position based on **popularity** (center = popular, outer = obscure)
-  - 🖱️ **Hover labels** show song names, artist, genre, and listen score in a tooltip
+  - 🖱️ **Hover labels** show song names, artist, genre, listen score, and album art in a tooltip
   - 🔗 **Clickable spheres** open tracks in Spotify
   - 🟢 **Larger invisible hover zone** for each sphere for easier interaction
 - ⚫️ Clean, responsive, dark-themed UI
-- 🖥️ **Sidebar** displays your top genre and summary information
-- 🔐 No personal data is stored, saved, or shared — processed entirely in-session
+- 🖥️ **Sidebar** displays your Spotify display name, top genres, top songs, and top artist, with a vibrant, shareable card
+- 🔐 No personal data is stored, saved, or shared — processed entirely in-session and via your backend
 
 ---
 
@@ -194,13 +194,13 @@ MIT License © 2025 [lileskimo](https://github.com/lileskimo)
   For a smooth user experience, each visible sphere is paired with a slightly larger, invisible sphere (1.2x the visible radius) to make hover detection easier and more forgiving.
 
 - **Interactive Tooltips:**  
-  Hovering over a sphere displays a tooltip at the sphere’s 3D position, rendered using Drei's `<Html>` component. The tooltip shows detailed information: track name, artist, genre, and listen score. Tooltips are styled to match Spotify’s theme and do not block pointer events.
+  Hovering over a sphere displays a tooltip at the sphere’s 3D position, rendered using Drei's `<Html>` component. The tooltip shows detailed information: track name, artist, genre, listen score, and album cover. Tooltips are styled to match Spotify’s theme and do not block pointer events.
 
 - **Spotify Integration:**  
   Clicking on a sphere opens the corresponding track’s Spotify page in a new browser tab, allowing you to listen instantly.
 
 - **Shareable Highlights Card:**  
-  The right sidebar displays a vibrant, shareable card featuring your Spotify display name, top genre, and top song. The card background uses a randomly generated, visually appealing gradient.
+  The right sidebar displays a vibrant, shareable card featuring your Spotify display name, top genres, top songs, and top artist. The card background uses a randomly generated, visually appealing gradient.
 
 - **Responsive Sidebar:**  
   The sidebar is always visible on the right, summarizing your listening highlights and adapting to different screen sizes.
