@@ -1,4 +1,4 @@
-# 🎧 Statify — Spotify Listening Visualizer
+# Statify
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![React](https://img.shields.io/badge/Built%20with-React-blue)](https://reactjs.org/)
