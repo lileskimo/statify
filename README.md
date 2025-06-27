@@ -11,7 +11,7 @@ Built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, **Expres
 
 ## 📸 Demo
 
-> _Coming Soon — animated preview GIF / Netlify/Vercel live link here_
+- [Demo Video](will add later)
 
 ---
 

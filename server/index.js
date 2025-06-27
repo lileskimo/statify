@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import SpotifyWebApi from 'spotify-web-api-node'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 dotenv.config()
 
@@ -144,6 +146,14 @@ app.get('/me', async (req, res) => {
     console.error(err)
     res.status(400).send('Failed to fetch user profile')
   }
+})
+
+// Serve React build
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+app.use(express.static(path.join(__dirname, '../client/build')))
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'))
 })
 
 app.listen(8888, () => console.log('Server running on port 8888'))
