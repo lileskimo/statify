@@ -20,7 +20,7 @@ export default function Home() {
   }, [])
 
   const handleLogin = () => {
-    window.location.href = 'https://tender-spirit.up.railway.app/login'
+    window.location.href = 'https://statify.up.railway.app/login'
   }
 
   return (

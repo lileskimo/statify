@@ -22,7 +22,7 @@ function TopSongs() {
       return
     }
 
-    axios.get('https://tender-spirit.up.railway.app/tracks', {
+    axios.get('https://statify.up.railway.app/tracks', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
