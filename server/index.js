@@ -29,7 +29,7 @@ app.get('/callback', async (req, res) => {
   try {
     const data = await spotifyApi.authorizationCodeGrant(code)
     const access_token = data.body.access_token
-    res.redirect(`https://statify.up.railway.app/?access_token=${access_token}`)
+    res.redirect(`https://tender-spirit.up.railway.app/?access_token=${access_token}`)
   } catch (err) {
     res.status(400).send('Spotify authorization failed')
   }
