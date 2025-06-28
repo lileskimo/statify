@@ -20,7 +20,7 @@ export default function Home() {
   }, [])
 
   const handleLogin = () => {
-    window.location.href = 'https://tender-spirit.up.railway.app/login'
+    window.location.href = 'https://statify.up.railway.app/login'
   }
 
   return (
@@ -163,7 +163,7 @@ export default function Home() {
           zIndex: 10,
         }}
       >
-        Built with ❤️. No data is stored — everything runs locally.
+        Made by <href link ="https:/github.com/lileskimo">lileskimo</href>. No data is stored — everything runs locally.
       </footer>
     </div>
   )

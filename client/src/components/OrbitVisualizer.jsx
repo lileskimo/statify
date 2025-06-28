@@ -120,14 +120,13 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
     return positions;
   }, [tracksByGenre, genreList])
 
-  // Generate a vibrant hue for the tooltip background (stable per session)
   const tooltipHue = useMemo(() => Math.floor(Math.random() * 360), []);
 
   return (
     <div style={{
       width: '100%',
       height: '100%',
-      overflow: 'hidden',
+      overflow: 'visible',
       background: 'transparent',
       borderRadius: '18px'
     }}>
