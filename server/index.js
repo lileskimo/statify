@@ -8,7 +8,10 @@ import { fileURLToPath } from 'url'
 dotenv.config()
 
 const app = express()
-app.use(cors())
+app.use(cors({
+  origin: 'https://statify.up.railway.app',
+  credentials: true
+}))
 app.use(express.json())
 
 const spotifyApi = new SpotifyWebApi({
