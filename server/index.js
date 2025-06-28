@@ -8,10 +8,7 @@ import { fileURLToPath } from 'url'
 dotenv.config()
 
 const app = express()
-app.use(cors({
-  origin: 'https://statify.up.railway.app',
-  credentials: true
-}))
+app.use(cors())
 app.use(express.json())
 
 const spotifyApi = new SpotifyWebApi({
@@ -27,13 +24,12 @@ app.get('/login', (req, res) => {
   res.redirect(authorizeURL)
 })
 
-// Callback Route
 app.get('/callback', async (req, res) => {
   const { code } = req.query
   try {
     const data = await spotifyApi.authorizationCodeGrant(code)
     const access_token = data.body.access_token
-    res.redirect(`https://statify.up.railway.app/?access_token=${access_token}`)
+    res.redirect(`https://tender-spirit.up.railway.app/?access_token=${access_token}`)
   } catch (err) {
     res.status(400).send('Spotify authorization failed')
   }
