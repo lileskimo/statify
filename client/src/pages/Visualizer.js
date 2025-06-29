@@ -4,6 +4,8 @@ import axios from 'axios'
 import { colorPalette, getGenreColor } from '../utils/genreColors'
 import { useNavigate } from 'react-router-dom'
 
+const API_URL = process.env.REACT_APP_SITE_URL
+
 function Visualizer() {
   const navigate = useNavigate()
   const [tracks, setTracks] = useState([])
@@ -27,14 +29,14 @@ function Visualizer() {
     if (!token) return
 
     // Fetch user profile for display name from backend
-    axios.get('https://tender-spirit.up.railway.app/me', {
+    axios.get(`${API_URL}/me`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
       setUserName(res.data.display_name || 'Your')
     }).catch(() => setUserName('Your'))
 
     // Fetch processed tracks from backend
-    axios.get('https://tender-spirit.up.railway.app/tracks', {
+    axios.get(`${API_URL}/tracks`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {

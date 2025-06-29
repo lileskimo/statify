@@ -185,7 +185,7 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
               width: 'auto',
               height: 'auto',
               whiteSpace: 'nowrap',
-              overflow: 'hidden',
+              overflow: 'visible',
               textOverflow: 'ellipsis',
               textAlign: 'left',
               fontFamily: 'sans-serif',

@@ -29,7 +29,7 @@ app.get('/callback', async (req, res) => {
   try {
     const data = await spotifyApi.authorizationCodeGrant(code)
     const access_token = data.body.access_token
-    res.redirect(`https://tender-spirit.up.railway.app/?access_token=${access_token}`)
+    res.redirect(`${process.env.SITE_URL}/?access_token=${access_token}`)
   } catch (err) {
     res.status(400).send('Spotify authorization failed')
   }
@@ -156,4 +156,4 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './build', 'index.html'))
 })
 
-app.listen(8888, () => console.log('Server running on port 8888'))
+app.listen(process.env.PORT || 8888, () => console.log(`Server running on port ${process.env.PORT || 8888}`))
