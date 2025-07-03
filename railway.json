@@ -1,0 +1,8 @@
+{
+    "build": {
+      "root": ".",
+      "buildCommand": "npm install --prefix server",
+      "startCommand": "npm start --prefix server"
+    }
+  }
+  
