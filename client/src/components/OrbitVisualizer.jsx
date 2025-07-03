@@ -3,11 +3,11 @@ import { OrbitControls, Sphere, Html } from '@react-three/drei'
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { colorPalette, getGenreColor } from '../utils/genreColors'
 
-function OrbitVisualizer({ tracks, genres, topGenre }) {
+function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
   const [hoveredTrack, setHoveredTrack] = useState(null)
   const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight
+    width: window.innerWidth-16,
+    height: window.innerHeight-16
   })
 
   useEffect(() => {
@@ -39,8 +39,8 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
 
   // Adjust orbit radii to consider sidebar width (300px)
   const orbitRadii = useMemo(() => {
-    const base = Math.min(windowSize.width - 300, windowSize.height) / 100
-    return [base * 1.5, base * 2.2, base * 3, base * 4]
+    const base = Math.min(windowSize.width, windowSize.height) / 18;
+    return [base * 8, base * 11, base * 15, base * 21]; // increased radii by 1.5x
   }, [windowSize])
 
   const genreColorMap = useMemo(() => {
@@ -58,7 +58,7 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
 
   useMemo(() => {
     let newPositions = {};
-    const minDist = 2.5;
+    const minDist = 7.0; // further increase minimum distance to reduce overlap for larger spheres
 
     let phiAccumulator = 0;
     genreList.forEach((genre, genreIdx) => {
@@ -69,8 +69,8 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
       phiAccumulator = phiEnd;
 
       // For radial spread: genres with more tracks have a much larger min/max radius
-      const minRadiusFactor = 1.0 + 2.0 * prop; // 1.0 to 3.0 (increase as needed)
-      const maxRadiusFactor = 2.0 + 4.0 * prop; // 2.0 to 6.0 (increase as needed)
+      const minRadiusFactor = 3; // was 1.0 + 3.0 * prop
+      const maxRadiusFactor = 10; // was 3.0 + 8.0 * prop
 
       const genrePositions = [];
 
@@ -79,10 +79,12 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
           let pos;
           let attempts = 0;
           do {
+            // Add more randomness to phi and theta, and radius
             const phi = phiStart + Math.random() * (phiEnd - phiStart);
-            const theta = (Math.PI / 4) + Math.random() * (Math.PI / 2);
+            const theta = (Math.PI / 6) + Math.random() * (Math.PI * 2 / 3); // wider theta range
             const baseRadius = orbitRadii[genreIdx % orbitRadii.length];
-            const radius = baseRadius * (minRadiusFactor + Math.random() * (maxRadiusFactor - minRadiusFactor));
+            // Add more randomness to radius
+            const radius = baseRadius * (minRadiusFactor + Math.random() * (maxRadiusFactor - minRadiusFactor) * Math.random());
 
             const x = Math.sin(theta) * Math.cos(phi) * radius;
             const y = Math.sin(theta) * Math.sin(phi) * radius;
@@ -93,7 +95,7 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
           } while (
             genrePositions.some(([gx, gy, gz]) =>
               Math.sqrt((gx - pos[0]) ** 2 + (gy - pos[1]) ** 2 + (gz - pos[2]) ** 2) < minDist
-            ) && attempts < 20
+            ) && attempts < 100 // even more attempts for better separation
           );
           positionsRef.current[track.id] = pos;
           genrePositions.push(pos);
@@ -122,17 +124,34 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
 
   const tooltipHue = useMemo(() => Math.floor(Math.random() * 360), []);
 
+  // Calculate a scale factor for sphere sizes based on window size
+  const sphereScale = useMemo(() => {
+    // Use the smaller of width or height, normalized to a base (e.g., 1200px)
+    const base = 100;
+    const minDim = Math.min(windowSize.width, windowSize.height);
+    // Clamp scale between 0.5 and 1 for usability
+    return Math.max(0.5, Math.min(1, minDim / base));
+  }, [windowSize]);
+
+  const orbitMaxWidth = isWide ? 'clamp(340px, 75vw, 1200px)' : 'clamp(340px, 95vw, 900px)';
+  const cardMaxWidth = isWide ? 'clamp(320px, 20vw, 540px)' : 'clamp(240px, 90vw, 810px)';
+
   return (
-    <div style={{
-      width: '100%',
-      height: '100%',
-      overflow: 'visible',
-      background: 'transparent',
-      borderRadius: '18px'
-    }}>
+    <div
+      style={{
+        flex: isWide ? '1 1 0' : 'unset',
+        maxWidth: orbitMaxWidth,
+        minWidth: cardMaxWidth,
+        width: '100%',
+        height: '100%',
+        overflow: 'visible',
+        background: 'transparent',
+        borderRadius: '18px'
+      }}
+    >
       <Canvas
         style={{ width: '100%', height: '100%', background: 'transparent' }}
-        camera={{ position: [0, 0, 50], fov: 50 }}
+        camera={{ position: [0, 0, 500], fov: 50, near: 0.1, far: 20000 }}
         gl={{ alpha: true }}
       >
         <ambientLight intensity={0.6} />
@@ -143,7 +162,7 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
           <group key={track.id} position={track.position}>
             <Sphere
               args={[
-                Math.max(0.4, track.listenScore * 0.03) * 1.2,
+                Math.max(1.2, track.listenScore * 2 * sphereScale),
                 32,
                 32
               ]}
@@ -164,7 +183,7 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
             </Sphere>
             <Sphere
               args={[
-                Math.max(0.4, track.listenScore * 0.0425),
+                Math.max(1.2, track.listenScore * 3 * sphereScale),
                 32,
                 32
               ]}
@@ -188,6 +207,7 @@ function OrbitVisualizer({ tracks, genres, topGenre }) {
               overflow: 'visible',
               textOverflow: 'ellipsis',
               textAlign: 'left',
+              textWrap: 'wrap',
               fontFamily: 'sans-serif',
               boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
               lineHeight: '1.5',

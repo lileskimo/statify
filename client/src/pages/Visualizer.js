@@ -14,9 +14,15 @@ function Visualizer() {
   const [topSongs, setTopSongs] = useState([])
   const [topArtist, setTopArtist] = useState('')
   const [userName, setUserName] = useState('Your')
+  const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight })
+  const isWide = windowSize.width >= windowSize.height
 
   const cardHue = useMemo(() => Math.floor(Math.random() * 360), [])
   const cardColor = useMemo(() => colorPalette[Math.floor(Math.random() * colorPalette.length)], [])
+
+  const NAVBAR_HEIGHT = 64; // px
+  const FOOTER_HEIGHT = 48; // px (approximate, adjust if needed)
+  const availableHeight = `calc(100vh - ${NAVBAR_HEIGHT}px - ${FOOTER_HEIGHT}px)`;
 
   useEffect(() => {
     if (!sessionStorage.getItem('spotify_access_token')) {
@@ -71,39 +77,61 @@ function Visualizer() {
       })
   }, [])
 
+  useEffect(() => {
+    const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight })
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Spacing variables
+  const sideSpace = isWide ? `${Math.max(0.05 * windowSize.width, 16)}px` : '10px'
+  const betweenSpace = isWide ? `${Math.max(0.06 * windowSize.width, 32)}px` : '40px'
+  const orbitMaxWidth = isWide ? 'clamp(320px, 70vw, 1200px)' : 'clamp(200px, 98vw, 750px)';
+  const cardMaxWidth = isWide ? 'clamp(320px, 28vw, 540px)' : 'clamp(200px, 70vw, 500px)';
+  const sharedMinWidth = isWide ? '340px' : '100px';
+  const cardMinWidth = isWide ? '240px' : '100px'
+
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start',
-      width: '100vw',
-      height: '100vh',
-      overflow: 'auto',
-      borderTop: '2px solid rgba(255,255,255,0.12)',
-      borderRight: '2px solid rgba(255,255,255,0.12)',
-      borderBottom: '2px solid rgba(255,255,255,0.12)',
-      background: 'transparent',
-      padding: '48px 32px 48px 32px',
-      boxSizing: 'border-box',
-      gap: '80px'
-    }}>
-      <div style={{
-        flex: '0 1 900px',
-        width: 'min(900px, 90vw)',
-        height: 'min(80vh, 80vw)',
+    <div
+      style={{
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start'
-      }}>
+        flexDirection: isWide ? 'row' : 'column',
+        alignItems: isWide ? 'stretch' : 'center',
+        justifyContent: 'center',
+        width: '100%',
+        minHeight: '100vh',
+        boxSizing: 'border-box',
+        paddingLeft: sideSpace,
+        paddingRight: sideSpace,
+        paddingTop: isWide ? 16 : 0, // small top padding for wide
+        paddingBottom: isWide ? 16 : 0, // small bottom padding for wide
+        gap: betweenSpace,
+        background: 'transparent',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          flex: isWide ? '1 1 0' : 'unset',
+          maxWidth: orbitMaxWidth,
+          minWidth: sharedMinWidth,
+          width: '100%',
+          height: isWide ? '80vh' : 'clamp(340px, 50vh, 800px)',
+          maxHeight: '1000px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+        }}
+      >
         <div style={{
           textAlign: 'center',
           fontSize: '2rem',
           fontWeight: 700,
           color: '#fff',
           letterSpacing: '0.02em',
-          marginBottom: '18px'
+          marginBottom: '18px',
         }}>
           Your Spotify Soundscape
         </div>
@@ -111,35 +139,42 @@ function Visualizer() {
           flex: '1 1 auto',
           width: '100%',
           height: '100%',
+          minWidth: '320px',
+          minHeight: '320px',
+          maxWidth: '900px',
+          maxHeight: isWide ? '100%' : '800px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           background: 'transparent',
           borderRadius: '18px',
-          boxShadow: '0 6px 28px rgba(0,0,0,0.25)'
+          boxShadow: '0 6px 28px rgba(0,0,0,0.25)',
         }}>
-          <OrbitVisualizer tracks={tracks} genres={genres} />
+          <OrbitVisualizer tracks={tracks} genres={genres} isWide={isWide} />
         </div>
       </div>
       {/* Shareable Card on the right */}
       <div
         style={{
+          flex: isWide ? '1 1 0' : 'unset',
+          maxWidth: cardMaxWidth,
+          minWidth: cardMinWidth,
+          width: '80%',
           alignSelf: 'center',
-          marginTop: 0,
-          marginBottom: 0,
-          display: 'inline-block',
-          padding: '2.2rem 2.5rem 2.2rem 2.5rem',
+          marginTop: isWide ? 0 : betweenSpace,
+          marginBottom: isWide ? 0 : '2vw', // Add gap below card in tall mode
+          padding: '2.2rem 2.5rem',
           borderRadius: '22px',
-          //black at center, and color at edges
           background: `radial-gradient(circle at center, rgba(0,0,0,0.95) 0%, ${cardColor} 100%)`,
           boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
-          minWidth: '320px',
-          opacity: '0.95',
-          maxWidth: '90vw',
           textAlign: 'center',
           fontWeight: '600',
           fontSize: '1.25rem',
           userSelect: 'text',
+          opacity: '0.95',
+          overflowWrap: 'break-word',
+          wordBreak: 'break-word',
+          whiteSpace: 'normal',
         }}
       >
         <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.7rem', color: 'white', opacity: 1 }}>
@@ -174,6 +209,8 @@ function Visualizer() {
           {topArtist}
         </div>
       </div>
+      {/* Spacer for tall mode to add 10vw at the bottom if scrolling is enabled */}
+      {!isWide && <div style={{ height: '10vw', width: '100%' }} />}
     </div>
   )
 }
