@@ -1,0 +1,20 @@
+{
+  "name": "statify",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Statify — a fullstack Spotify stats visualizer built with React, Three.js, and Node.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lileskimo/statify.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lileskimo/statify/issues"
+  },
+  "homepage": "https://github.com/lileskimo/statify#readme",
+  "scripts": {
+    "install-all": "npm --prefix client install && npm --prefix server install",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start"
+  }
+}
