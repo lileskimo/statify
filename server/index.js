@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import SpotifyWebApi from 'spotify-web-api-node'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { dirname } from 'path'
 
 dotenv.config()
 
@@ -16,6 +17,8 @@ const spotifyApi = new SpotifyWebApi({
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
   redirectUri: process.env.SPOTIFY_REDIRECT_URI
 })
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Login Route
 app.get('/login', (req, res) => {
