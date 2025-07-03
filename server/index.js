@@ -100,9 +100,9 @@ app.get('/tracks', async (req, res) => {
     // Calculate listenScore and build final tracks array
     const finalTracks = Object.values(trackMap).map(track => {
       const listenScore = Math.round(
-        0.4 * (100 - track.short_rank) +
-        0.32 * (100 - track.medium_rank) +
-        0.28 * (100 - track.long_rank)
+        0.3 * (100 - track.short_rank) +
+        0.35 * (100 - track.medium_rank) +
+        0.35 * (100 - track.long_rank)
       )
       return {
         id: track.id,
