@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-const API_URL = process.env.REACT_APP_SITE_URL
+const API_URL = 'https://tender-spirit.up.railway.app'
 
 function TopSongs() {
   const [tracks, setTracks] = useState([])

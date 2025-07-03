@@ -4,7 +4,7 @@ import axios from 'axios'
 import { colorPalette, getGenreColor } from '../utils/genreColors'
 import { useNavigate } from 'react-router-dom'
 
-const API_URL = process.env.REACT_APP_SITE_URL
+const API_URL = 'https://tender-spirit.up.railway.app'
 
 function Visualizer() {
   const navigate = useNavigate()
