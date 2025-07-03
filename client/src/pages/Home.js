@@ -33,9 +33,7 @@ export default function Home() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
         position: 'relative',
-        overflow: 'hidden',
       }}
     >
       {/* Announcement Bar */}
@@ -46,7 +44,8 @@ export default function Home() {
           width: '100%',
           textAlign: 'center',
           padding: '0.5rem 0',
-          background: 'white',
+          background: 'rgba(40,40,40,0.4)',
+          color: 'white',
           boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
           fontSize: '0.95rem',
           fontFamily: 'monospace',
@@ -65,7 +64,7 @@ export default function Home() {
           color: 'white',
           textAlign: 'center',
           zIndex: 10,
-          marginTop: '4rem',
+          marginTop: '5rem',
         }}
       >
         Travel across your Spotify Soundscape
@@ -86,7 +85,7 @@ export default function Home() {
       </p>
 
       {/* Main Action Area */}
-      <div style={{ marginTop: '2.5rem', zIndex: 10, display: 'flex', gap: '1.5rem' }}>
+      <div style={{ marginTop: '2.5rem', zIndex: 10, display: 'flex', gap: '1.5rem', marginBottom: '3.5rem' }}>
         {!token ? (
           <button
             onClick={handleLogin}
@@ -150,21 +149,6 @@ export default function Home() {
           </>
         )}
       </div>
-
-      {/* Footer */}
-      <footer
-        style={{
-          position: 'absolute',
-          bottom: '1rem',
-          width: '100%',
-          textAlign: 'center',
-          fontSize: '0.85rem',
-          color: '#888',
-          zIndex: 10,
-        }}
-      >
-      Made by <href link ="https:/github.com/lileskimo">lileskimo</href>. No data is stored — everything runs locally.
-      </footer>
     </div>
   )
 }

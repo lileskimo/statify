@@ -99,7 +99,7 @@ function TopSongs() {
         justifyContent: 'center'
     }}>
       <h2 style={{ fontSize: '2.2rem', fontWeight: 700, marginBottom: '2rem', textAlign: 'center' }}>
-        Your Top 50 Spotify Songs <span style={{ fontWeight: 400, fontSize: '1.2rem' }}>(Past Year)</span>
+        Your Top Spotify Songs <span style={{ fontWeight: 400, fontSize: '1.2rem' }}>(Past Year)</span>
       </h2>
       <div style={{
         flex: 1,
