@@ -58,7 +58,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
 
   useMemo(() => {
     let newPositions = {};
-    const minDist = 7.0; // further increase minimum distance to reduce overlap for larger spheres
+    const minDist = 10.0; // further increase minimum distance to reduce overlap for larger spheres
 
     let phiAccumulator = 0;
     genreList.forEach((genre, genreIdx) => {
