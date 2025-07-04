@@ -189,10 +189,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
         ))}
 
         {selectedTrack && (
-          (() => { console.log('Selected track for tooltip:', selectedTrack, 'Position:', selectedTrack.position); return null })()
-        )}
-        {selectedTrack && (
-          <Html key={selectedTrack.id} position={selectedTrack.position ? [...selectedTrack.position] : [0,0,0]} distanceFactor={8} center transform>
+          <Html key={selectedTrack.id} position={[0,0,0]} distanceFactor={8} center transform>
             <div style={{
               background: '#181818',
               color: '#fff',
@@ -270,6 +267,28 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           </Html>
         )}
       </Canvas>
+      {/* Debug: Always show tooltip as a div outside the canvas if selectedTrack is set */}
+      {selectedTrack && (
+        <div style={{
+          position: 'fixed',
+          top: 100,
+          left: 100,
+          zIndex: 9999,
+          background: '#222',
+          color: '#fff',
+          padding: '16px',
+          borderRadius: '10px',
+          border: '2px solid #1DB954',
+        }}>
+          <div><b>{selectedTrack.name}</b> by {selectedTrack.artistName}</div>
+          <div>Genre: {selectedTrack.genre}</div>
+          <div>Score: {selectedTrack.listenScore}</div>
+          {selectedTrack.external_urls?.spotify && (
+            <a href={selectedTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" style={{ color: '#1DB954' }}>Listen on Spotify</a>
+          )}
+          <button onClick={() => setSelectedTrack(null)} style={{ marginLeft: 12, color: '#fff', background: '#1DB954', border: 'none', borderRadius: 4, padding: '4px 8px', cursor: 'pointer' }}>Close</button>
+        </div>
+      )}
     </div>
   )
 }
