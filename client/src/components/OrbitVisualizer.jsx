@@ -248,7 +248,6 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
         style={{ width: '100%', height: '100%', background: 'transparent' }}
         camera={{ position: [0, 0, 500], fov: 50, near: 0.1, far: 20000 }}
         gl={{ alpha: true }}
-        onPointerMissed={() => setSelectedTrack(null)}
       >
         <ambientLight intensity={0.6} />
         <directionalLight position={[5, 5, 5]} />
@@ -282,12 +281,11 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
             </Sphere>
           </group>
         ))}
-
-        {/* Render the DOM tooltip above the clicked sphere */}
-        {selectedTrack && selectedTrack.position && (
-          <TrackTooltip track={selectedTrack} position3D={selectedTrack.position} onClose={() => setSelectedTrack(null)} />
-        )}
       </Canvas>
+      {/* Render the DOM tooltip above the clicked sphere, OUTSIDE the Canvas */}
+      {selectedTrack && selectedTrack.position && (
+        <TrackTooltip track={selectedTrack} position3D={selectedTrack.position} onClose={() => setSelectedTrack(null)} />
+      )}
     </div>
   )
 }
