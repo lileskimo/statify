@@ -189,7 +189,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
         ))}
 
         {selectedTrack && (
-          <Html key={selectedTrack.id} position={[0,0,0]} distanceFactor={8} center transform>
+          <Html key={selectedTrack.id} position={[0,0,0]} distanceFactor={1} center>
             <div style={{
               background: '#181818',
               color: '#fff',
@@ -268,8 +268,8 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
         )}
 
         {/* Minimal Html for debug: should always show at center of canvas */}
-        <Html position={[0,0,0]} distanceFactor={8} center transform>
-          <div style={{ background: '#1DB954', color: '#fff', padding: 12, borderRadius: 8 }}>
+        <Html position={[0,0,0]} distanceFactor={1} center>
+          <div style={{ background: '#1DB954', color: '#fff', padding: '16px 24px', borderRadius: 8, fontSize: '1rem', minWidth: 220, textAlign: 'center' }}>
             DEBUG: This should always show in the center
           </div>
         </Html>
