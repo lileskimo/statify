@@ -40,7 +40,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
   // Adjust orbit radii to consider sidebar width (300px)
   const orbitRadii = useMemo(() => {
     const base = Math.min(windowSize.width, windowSize.height) / 18;
-    return [base * 8, base * 11, base * 15, base * 21]; // increased radii by 1.5x
+    return [base * 8, base * 11, base * 16, base * 22]; // increased radii by 1.5x
   }, [windowSize])
 
   const genreColorMap = useMemo(() => {
