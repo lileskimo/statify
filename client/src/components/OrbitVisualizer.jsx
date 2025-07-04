@@ -1,6 +1,6 @@
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useThree } from '@react-three/fiber'
 import { OrbitControls, Sphere, Html } from '@react-three/drei'
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { colorPalette, getGenreColor } from '../utils/genreColors'
 
 function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
@@ -136,6 +136,100 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
   const orbitMaxWidth = isWide ? 'clamp(340px, 75vw, 1200px)' : 'clamp(340px, 95vw, 900px)';
   const cardMaxWidth = isWide ? 'clamp(320px, 20vw, 540px)' : 'clamp(240px, 90vw, 810px)';
 
+  // Helper to project 3D position to 2D screen coordinates
+  function useScreenPosition(position3D) {
+    const { camera, size } = useThree();
+    const [screenPos, setScreenPos] = useState(null);
+
+    useEffect(() => {
+      if (!position3D) return;
+      // Project 3D position to normalized device coordinates (NDC)
+      const vector = new window.THREE.Vector3(...position3D);
+      vector.project(camera);
+      // Convert NDC to screen coordinates
+      const x = (vector.x + 1) / 2 * size.width;
+      const y = (-vector.y + 1) / 2 * size.height;
+      setScreenPos({ x, y });
+    }, [position3D, camera, size]);
+
+    return screenPos;
+  }
+
+  // Tooltip component rendered in DOM at screen position
+  function TrackTooltip({ track, position3D, onClose }) {
+    const screenPos = useScreenPosition(position3D);
+    if (!screenPos) return null;
+    return (
+      <div style={{
+        position: 'fixed',
+        left: screenPos.x,
+        top: screenPos.y - 80, // 80px above the point
+        zIndex: 9999,
+        background: '#181818',
+        color: '#fff',
+        padding: '18px 32px',
+        borderRadius: '16px',
+        minWidth: '220px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+        border: '1px solid #1DB954',
+        pointerEvents: 'auto',
+        fontFamily: 'sans-serif',
+        lineHeight: '1.5',
+        transform: 'translate(-50%, 0)',
+      }}>
+        <button onClick={onClose} style={{
+          position: 'absolute',
+          top: 8,
+          right: 8,
+          background: 'none',
+          border: 'none',
+          color: '#fff',
+          fontSize: 20,
+          cursor: 'pointer',
+          opacity: 0.7
+        }} aria-label="Close">×</button>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
+          {track.albumImage && (
+            <img
+              src={track.albumImage}
+              alt={track.name}
+              style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', marginRight: 16 }}
+            />
+          )}
+          <div>
+            <div style={{ fontSize: '22px', fontWeight: '700', marginBottom: '4px' }}>{track.name}</div>
+            <div style={{ fontSize: '18px', fontWeight: '500', marginBottom: '4px' }}>{track.artistName}</div>
+          </div>
+        </div>
+        <div style={{ fontSize: '16px', marginBottom: '6px' }}>
+          <span style={{ color: '#1DB954', fontWeight: '600' }}>Genre: </span>
+          {track.genre.charAt(0).toUpperCase() + track.genre.slice(1)}
+        </div>
+        <div style={{ fontSize: '16px' }}>
+          <span style={{ color: '#1DB954', fontWeight: '600' }}>Score: </span>
+          {track.listenScore}
+        </div>
+        {track.external_urls?.spotify && (
+          <div style={{ marginTop: 12 }}>
+            <a
+              href={track.external_urls.spotify}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: '#1DB954',
+                fontWeight: 600,
+                textDecoration: 'underline',
+                fontSize: '16px',
+              }}
+            >
+              Listen on Spotify
+            </a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -170,7 +264,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedTrack(track);
-                console.log('Sphere clicked:', track.name);
+                // Optionally, scroll to the tooltip or focus
               }}
             >
               <meshStandardMaterial transparent opacity={0} />
@@ -188,86 +282,9 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           </group>
         ))}
 
-        {selectedTrack && (
-          (() => { console.log('Rendering Html tooltip at position:', selectedTrack.position); return null })()
-        )}
-        {selectedTrack && (
-          <Html key={selectedTrack.id} position={selectedTrack.position ? [...selectedTrack.position] : [0,0,0]} distanceFactor={1} center>
-            <div style={{
-              background: '#181818',
-              color: '#fff',
-              padding: '18px 32px',
-              borderRadius: '16px',
-              minWidth: '220px',
-              width: 'auto',
-              height: 'auto',
-              whiteSpace: 'nowrap',
-              overflow: 'visible',
-              textOverflow: 'ellipsis',
-              textAlign: 'left',
-              textWrap: 'wrap',
-              fontFamily: 'sans-serif',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
-              lineHeight: '1.5',
-              border: '1px solid #1DB954',
-              pointerEvents: 'auto',
-              position: 'relative',
-            }}>
-              <button onClick={() => setSelectedTrack(null)} style={{
-                position: 'absolute',
-                top: 8,
-                right: 8,
-                background: 'none',
-                border: 'none',
-                color: '#fff',
-                fontSize: 20,
-                cursor: 'pointer',
-                opacity: 0.7
-              }} aria-label="Close">×</button>
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
-                {selectedTrack.albumImage && (
-                  <img
-                    src={selectedTrack.albumImage}
-                    alt={selectedTrack.name}
-                    style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', marginRight: 16 }}
-                  />
-                )}
-                <div>
-                  <div style={{ fontSize: '22px', fontWeight: '700', marginBottom: '4px' }}>
-                    {selectedTrack.name}
-                  </div>
-                  <div style={{ fontSize: '18px', fontWeight: '500', marginBottom: '4px' }}>
-                    {selectedTrack.artistName}
-                  </div>
-                </div>
-              </div>
-              <div style={{ fontSize: '16px', marginBottom: '6px' }}>
-                <span style={{ color: '#1DB954', fontWeight: '600' }}>Genre: </span>
-                {selectedTrack.genre.charAt(0).toUpperCase() + selectedTrack.genre.slice(1)}
-              </div>
-              <div style={{ fontSize: '16px' }}>
-                <span style={{ color: '#1DB954', fontWeight: '600' }}>Score: </span>
-                {selectedTrack.listenScore}
-              </div>
-              {selectedTrack.external_urls?.spotify && (
-                <div style={{ marginTop: 12 }}>
-                  <a
-                    href={selectedTrack.external_urls.spotify}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      color: '#1DB954',
-                      fontWeight: 600,
-                      textDecoration: 'underline',
-                      fontSize: '16px',
-                    }}
-                  >
-                    Listen on Spotify
-                  </a>
-                </div>
-              )}
-            </div>
-          </Html>
+        {/* Render the DOM tooltip above the clicked sphere */}
+        {selectedTrack && selectedTrack.position && (
+          <TrackTooltip track={selectedTrack} position3D={selectedTrack.position} onClose={() => setSelectedTrack(null)} />
         )}
       </Canvas>
     </div>
