@@ -170,6 +170,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedTrack(track);
+                console.log('Sphere clicked:', track.name);
               }}
             >
               <meshStandardMaterial transparent opacity={0} />
@@ -180,6 +181,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
                 32,
                 32
               ]}
+              pointerEvents={false}
             >
               <meshStandardMaterial color={getGenreColor(track.genre)} />
             </Sphere>
