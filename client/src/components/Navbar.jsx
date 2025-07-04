@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react'
 function Navbar() {
   const token = sessionStorage.getItem('spotify_access_token')
   const navigate = useNavigate()
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 600)
+  const getIsMobile = () => typeof window !== 'undefined' ? window.innerWidth < 600 : false
+  const [isMobile, setIsMobile] = useState(getIsMobile())
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 600)
+    const handleResize = () => setIsMobile(getIsMobile())
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
