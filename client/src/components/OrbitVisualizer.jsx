@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { colorPalette, getGenreColor } from '../utils/genreColors'
 
 function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
-  const [hoveredTrack, setHoveredTrack] = useState(null)
+  const [selectedTrack, setSelectedTrack] = useState(null)
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth-16,
     height: window.innerHeight-16
@@ -40,7 +40,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
   // Adjust orbit radii to consider sidebar width (300px)
   const orbitRadii = useMemo(() => {
     const base = Math.min(windowSize.width, windowSize.height) / 18;
-    return [base * 8, base * 11, base * 15, base * 21]; // increased radii by 1.5x
+    return [base * 8, base * 11, base * 15, base * 21];
   }, [windowSize])
 
   const genreColorMap = useMemo(() => {
@@ -58,7 +58,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
 
   useMemo(() => {
     let newPositions = {};
-    const minDist = 7.0; // further increase minimum distance to reduce overlap for larger spheres
+    const minDist = 7.0;
 
     let phiAccumulator = 0;
     genreList.forEach((genre, genreIdx) => {
@@ -68,9 +68,8 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
       const phiEnd = phiStart + prop * 2 * Math.PI;
       phiAccumulator = phiEnd;
 
-      // For radial spread: genres with more tracks have a much larger min/max radius
-      const minRadiusFactor = 3; // was 1.0 + 3.0 * prop
-      const maxRadiusFactor = 10; // was 3.0 + 8.0 * prop
+      const minRadiusFactor = 3;
+      const maxRadiusFactor = 10;
 
       const genrePositions = [];
 
@@ -79,11 +78,9 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           let pos;
           let attempts = 0;
           do {
-            // Add more randomness to phi and theta, and radius
             const phi = phiStart + Math.random() * (phiEnd - phiStart);
-            const theta = (Math.PI / 6) + Math.random() * (Math.PI * 2 / 3); // wider theta range
+            const theta = (Math.PI / 6) + Math.random() * (Math.PI * 2 / 3);
             const baseRadius = orbitRadii[genreIdx % orbitRadii.length];
-            // Add more randomness to radius
             const radius = baseRadius * (minRadiusFactor + Math.random() * (maxRadiusFactor - minRadiusFactor) * Math.random());
 
             const x = Math.sin(theta) * Math.cos(phi) * radius;
@@ -95,7 +92,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           } while (
             genrePositions.some(([gx, gy, gz]) =>
               Math.sqrt((gx - pos[0]) ** 2 + (gy - pos[1]) ** 2 + (gz - pos[2]) ** 2) < minDist
-            ) && attempts < 100 // even more attempts for better separation
+            ) && attempts < 100
           );
           positionsRef.current[track.id] = pos;
           genrePositions.push(pos);
@@ -126,15 +123,108 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
 
   // Calculate a scale factor for sphere sizes based on window size
   const sphereScale = useMemo(() => {
-    // Use the smaller of width or height, normalized to a base (e.g., 1200px)
     const base = 100;
     const minDim = Math.min(windowSize.width, windowSize.height);
-    // Clamp scale between 0.5 and 1 for usability
     return Math.max(0.5, Math.min(1, minDim / base));
   }, [windowSize]);
 
   const orbitMaxWidth = isWide ? 'clamp(340px, 75vw, 1200px)' : 'clamp(340px, 95vw, 900px)';
   const cardMaxWidth = isWide ? 'clamp(320px, 20vw, 540px)' : 'clamp(240px, 90vw, 810px)';
+
+  // Simple tooltip at top-right of the container
+  function TrackTooltip({ track, onClose }) {
+    const ref = useRef();
+    useEffect(() => {
+      function handleClick(e) {
+        if (ref.current && !ref.current.contains(e.target)) {
+          onClose();
+        }
+      }
+      document.addEventListener('mousedown', handleClick);
+      return () => document.removeEventListener('mousedown', handleClick);
+    }, [onClose]);
+    return (
+      <div
+        ref={ref}
+        style={{
+          position: 'absolute',
+          top: 24,
+          right: 24,
+          zIndex: 9999,
+          background: '#181818',
+          color: '#fff',
+          padding: '18px 32px',
+          borderRadius: '16px',
+          width: '280px',
+          maxWidth: '75vw',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+          border: '1px solid #1DB954',
+          pointerEvents: 'auto',
+          fontFamily: 'sans-serif',
+          lineHeight: '1.5',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+        }}
+      >
+        <button
+          onClick={onClose}
+          style={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            background: 'none',
+            border: 'none',
+            color: '#fff',
+            fontSize: 20,
+            cursor: 'pointer',
+            opacity: 0.7,
+          }}
+          aria-label="Close"
+        >
+          x
+        </button>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12, width: '100%' }}>
+          {track.albumImage && (
+            <img
+              src={track.albumImage}
+              alt={track.name}
+              style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', marginRight: 16 }}
+            />
+          )}
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '22px', fontWeight: '700', marginBottom: '4px', wordBreak: 'break-word' }}>{track.name}</div>
+            <div style={{ fontSize: '18px', fontWeight: '500', marginBottom: '4px', wordBreak: 'break-word' }}>{track.artistName}</div>
+          </div>
+        </div>
+        <div style={{ fontSize: '16px', marginBottom: '6px' }}>
+          <span style={{ color: '#1DB954', fontWeight: '600' }}>Genre: </span>
+          {track.genre.charAt(0).toUpperCase() + track.genre.slice(1)}
+        </div>
+        <div style={{ fontSize: '16px' }}>
+          <span style={{ color: '#1DB954', fontWeight: '600' }}>Score: </span>
+          {track.listenScore}
+        </div>
+        {track.external_urls?.spotify && (
+          <div style={{ marginTop: 12 }}>
+            <a
+              href={track.external_urls.spotify}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: '#1DB954',
+                fontWeight: 600,
+                textDecoration: 'underline',
+                fontSize: '16px',
+              }}
+            >
+              Listen on Spotify
+            </a>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div
@@ -146,7 +236,8 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
         height: '100%',
         overflow: 'visible',
         background: 'transparent',
-        borderRadius: '18px'
+        borderRadius: '18px',
+        position: 'relative'
       }}
     >
       <Canvas
@@ -166,17 +257,9 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
                 32,
                 32
               ]}
-              onPointerOver={(e) => {
+              onClick={(e) => {
                 e.stopPropagation();
-                setHoveredTrack(track);
-              }}
-              onPointerOut={(e) => {
-                e.stopPropagation();
-                setHoveredTrack(null);
-              }}
-              onClick={() => {
-                if (track.external_urls?.spotify)
-                  window.open(track.external_urls.spotify, '_blank');
+                setSelectedTrack(track);
               }}
             >
               <meshStandardMaterial transparent opacity={0} />
@@ -187,62 +270,17 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
                 32,
                 32
               ]}
+              pointerEvents={false}
             >
               <meshStandardMaterial color={getGenreColor(track.genre)} />
             </Sphere>
           </group>
         ))}
-
-        {hoveredTrack && (
-          <Html position={hoveredTrack.position} distanceFactor={0} center>
-            <div style={{
-              background: '#181818',
-              color: '#fff',
-              padding: '18px 32px',
-              borderRadius: '16px',
-              minWidth: '200px',
-              width: 'auto',
-              height: 'auto',
-              whiteSpace: 'nowrap',
-              overflow: 'visible',
-              textOverflow: 'ellipsis',
-              textAlign: 'left',
-              textWrap: 'wrap',
-              fontFamily: 'sans-serif',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
-              lineHeight: '1.5',
-              border: '1px solid #1DB954',
-              pointerEvents: 'none'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
-                {hoveredTrack.albumImage && (
-                  <img
-                    src={hoveredTrack.albumImage}
-                    alt={hoveredTrack.name}
-                    style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', marginRight: 16 }}
-                  />
-                )}
-                <div>
-                  <div style={{ fontSize: '22px', fontWeight: '700', marginBottom: '4px' }}>
-                    {hoveredTrack.name}
-                  </div>
-                  <div style={{ fontSize: '18px', fontWeight: '500', marginBottom: '4px' }}>
-                    {hoveredTrack.artistName}
-                  </div>
-                </div>
-              </div>
-              <div style={{ fontSize: '16px', marginBottom: '6px' }}>
-                <span style={{ color: '#1DB954', fontWeight: '600' }}>Genre: </span>
-                {hoveredTrack.genre.charAt(0).toUpperCase() + hoveredTrack.genre.slice(1)}
-              </div>
-              <div style={{ fontSize: '16px' }}>
-                <span style={{ color: '#1DB954', fontWeight: '600' }}>Score: </span>
-                {hoveredTrack.listenScore}
-              </div>
-            </div>
-          </Html>
-        )}
       </Canvas>
+      {/* Render the simple tooltip at the top-right corner of the container */}
+      {selectedTrack && (
+        <TrackTooltip track={selectedTrack} onClose={() => setSelectedTrack(null)} />
+      )}
     </div>
   )
 }

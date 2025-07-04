@@ -127,7 +127,7 @@ function Visualizer() {
       >
         <div style={{
           textAlign: 'center',
-          fontSize: '2rem',
+          fontSize: 'clamp(1.5rem, 4vw, 2rem)',
           fontWeight: 700,
           color: '#fff',
           letterSpacing: '0.02em',
@@ -169,7 +169,7 @@ function Visualizer() {
           boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
           textAlign: 'center',
           fontWeight: '600',
-          fontSize: '1.25rem',
+          fontSize: 'clamp(1.1rem, 3vw, 1.25rem)',
           userSelect: 'text',
           opacity: '0.95',
           overflowWrap: 'break-word',
@@ -177,10 +177,10 @@ function Visualizer() {
           whiteSpace: 'normal',
         }}
       >
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.7rem', color: 'white', opacity: 1 }}>
+        <div style={{ fontSize: 'clamp(1rem, 2.5vw, 1.1rem)', fontWeight: 600, marginBottom: '0.7rem', color: 'white', opacity: 1 }}>
           {userName}&apos;s Spotify Highlights
         </div>
-        <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem' }}>
+        <div style={{ fontSize: 'clamp(1.1rem, 3vw, 1.2rem)', fontWeight: 700, color: 'white', marginBottom: '0.5rem' }}>
           Top Genres
         </div>
           {topGenres.map((g, i) => (
@@ -191,21 +191,21 @@ function Visualizer() {
                 color: getGenreColor(g),
                 marginBottom: '0.2em',
                 fontWeight: 500,
-                fontSize: '1.1rem'
+                fontSize: 'clamp(1rem, 2.5vw, 1.1rem)'
               }}>{g}</div>
           ))}
-        <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem', marginTop: '1.2rem' }}>
+        <div style={{ fontSize: 'clamp(1.1rem, 3vw, 1.2rem)', fontWeight: 700, color: 'white', marginBottom: '0.5rem', marginTop: '1.2rem' }}>
           Top Songs
         </div>
-        <div style={{ fontSize: '1.1rem' ,color: 'white', fontWeight: 500, marginBottom: '1.2rem' }}>
+        <div style={{ fontSize: 'clamp(1rem, 2.5vw, 1.1rem)' ,color: 'white', fontWeight: 500, marginBottom: '1.2rem' }}>
           {topSongs.map((s, i) => (
             <div key={s}>{s}</div>
           ))}
         </div>
-        <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem' }}>
+        <div style={{ fontSize: 'clamp(1.1rem, 3vw, 1.2rem)', fontWeight: 700, color: 'white', marginBottom: '0.5rem' }}>
           Top Artist
         </div>
-        <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 500 }}>
+        <div style={{ fontSize: 'clamp(1rem, 2.5vw, 1.1rem)', color: 'white', fontWeight: 500 }}>
           {topArtist}
         </div>
       </div>
