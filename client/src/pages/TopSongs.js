@@ -85,7 +85,8 @@ function TopSongs() {
 
   return (
     <div style={{
-      maxWidth: 800,
+      maxWidth: '800px',
+      width: '95vw',
       margin: '3rem auto',
       background: 'rgba(28,28,30,0.95)',
       borderRadius: 18,
@@ -96,7 +97,8 @@ function TopSongs() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-        justifyContent: 'center'
+      justifyContent: 'center',
+      overflow: 'hidden',
     }}>
       <h2 style={{ fontSize: '2.2rem', fontWeight: 700, marginBottom: '2rem', textAlign: 'center' }}>
         Your Top Spotify Songs <span style={{ fontWeight: 400, fontSize: '1.2rem' }}>(Past Year)</span>
