@@ -116,20 +116,24 @@ function TopSongs() {
       }}>
         <ol style={{ padding: 0, margin: 0, listStyle: 'decimal inside', width: '100%', boxSizing: 'border-box' }}>
           {tracks.map((track, i) => (
-            <li key={track.id || (track.name + i)} style={{
-              marginBottom: '1.2rem',
-              padding: '0.7rem 0.5rem',
-              borderRadius: 10,
-              background: i % 2 === 0 ? 'rgba(48,209,88,0.07)' : 'rgba(255,255,255,0.03)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1.2rem',
-              justifyContent: 'space-between',
-              minWidth: 0,
-              width: '100%',
-              boxSizing: 'border-box',
-              overflow: 'hidden',
-            }}>
+            <li
+              key={track.id || (track.name + i)}
+              style={{
+                marginBottom: '1.2rem',
+                padding: '0.7rem 0.5rem',
+                borderRadius: 10,
+                background: i % 2 === 0 ? 'rgba(48,209,88,0.07)' : 'rgba(255,255,255,0.03)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1.2rem',
+                justifyContent: 'space-between',
+                minWidth: 0,
+                width: '100%',
+                boxSizing: 'border-box',
+                overflow: 'hidden',
+                flexWrap: 'wrap',
+              }}
+            >
               {track.albumImage && (
                 <img
                   src={track.albumImage}
@@ -142,34 +146,67 @@ function TopSongs() {
                 <div style={{ color: '#b3b3b3', fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Artist: {track.artistName}</div>
                 <div style={{ color: '#b3b3b3', fontSize: '1rem' }}>Genre: {track.genre}</div>
                 <div style={{ color: '#888', fontSize: '0.95rem' }}>Score: {track.listenScore}</div>
+                <span className="spotify-btn-mobile" style={{ display: 'none' }}>
+                  {track.external_urls?.spotify && (
+                    <a
+                      href={track.external_urls.spotify}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'inline-block',
+                        marginTop: 8,
+                        padding: '6px 16px',
+                        background: '#1DB954',
+                        color: '#fff',
+                        borderRadius: 6,
+                        fontWeight: 600,
+                        fontSize: '1rem',
+                        textDecoration: 'none',
+                        boxShadow: '0 2px 8px #0002',
+                        transition: 'background 0.2s',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      Listen on Spotify
+                    </a>
+                  )}
+                </span>
               </div>
-              {track.external_urls?.spotify && (
-                <a
-                  href={track.external_urls.spotify}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'inline-block',
-                    marginLeft: 16,
-                    padding: '6px 16px',
-                    background: '#1DB954',
-                    color: '#fff',
-                    borderRadius: 6,
-                    fontWeight: 600,
-                    fontSize: '1rem',
-                    textDecoration: 'none',
-                    boxShadow: '0 2px 8px #0002',
-                    transition: 'background 0.2s',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Listen on Spotify
-                </a>
-              )}
+              <span className="spotify-btn-desktop" style={{ display: 'inline-block' }}>
+                {track.external_urls?.spotify && (
+                  <a
+                    href={track.external_urls.spotify}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-block',
+                      marginLeft: 16,
+                      padding: '6px 16px',
+                      background: '#1DB954',
+                      color: '#fff',
+                      borderRadius: 6,
+                      fontWeight: 600,
+                      fontSize: '1rem',
+                      textDecoration: 'none',
+                      boxShadow: '0 2px 8px #0002',
+                      transition: 'background 0.2s',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Listen on Spotify
+                  </a>
+                )}
+              </span>
             </li>
           ))}
         </ol>
       </div>
+      <style>{`
+        @media (max-width: 600px) {
+          .spotify-btn-desktop { display: none !important; }
+          .spotify-btn-mobile { display: inline-block !important; width: 100%; }
+        }
+      `}</style>
     </div>
   )
 }
