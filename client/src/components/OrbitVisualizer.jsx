@@ -139,38 +139,58 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
 
   // Simple tooltip at top-right of the container
   function TrackTooltip({ track, onClose }) {
+    const ref = useRef();
+    useEffect(() => {
+      function handleClick(e) {
+        if (ref.current && !ref.current.contains(e.target)) {
+          onClose();
+        }
+      }
+      document.addEventListener('mousedown', handleClick);
+      return () => document.removeEventListener('mousedown', handleClick);
+    }, [onClose]);
     return (
-      <div style={{
-        position: 'absolute',
-        top: 24,
-        right: 24,
-        zIndex: 9999,
-        background: '#181818',
-        color: '#fff',
-        padding: '18px 32px',
-        borderRadius: '16px',
-        minWidth: '240px',
-        maxWidth: '340px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
-        border: '1px solid #1DB954',
-        pointerEvents: 'auto',
-        fontFamily: 'sans-serif',
-        lineHeight: '1.5',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-      }}>
-        <button onClick={onClose} style={{
+      <div
+        ref={ref}
+        style={{
           position: 'absolute',
-          top: 8,
-          right: 8,
-          background: 'none',
-          border: 'none',
+          top: 24,
+          right: 24,
+          zIndex: 9999,
+          background: '#181818',
           color: '#fff',
-          fontSize: 20,
-          cursor: 'pointer',
-          opacity: 0.7
-        }} aria-label="Close">×</button>
+          padding: '18px 32px',
+          borderRadius: '16px',
+          minWidth: '240px',
+          maxWidth: '400px',
+          width: '100%',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+          border: '1px solid #1DB954',
+          pointerEvents: 'auto',
+          fontFamily: 'sans-serif',
+          lineHeight: '1.5',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+        }}
+      >
+        <button
+          onClick={onClose}
+          style={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            background: 'none',
+            border: 'none',
+            color: '#fff',
+            fontSize: 20,
+            cursor: 'pointer',
+            opacity: 0.7,
+          }}
+          aria-label="Close"
+        >
+          ×
+        </button>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12, width: '100%' }}>
           {track.albumImage && (
             <img
