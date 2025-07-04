@@ -189,7 +189,10 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
         ))}
 
         {selectedTrack && (
-          <Html position={selectedTrack.position} distanceFactor={0} center>
+          (() => { console.log('Selected track for tooltip:', selectedTrack, 'Position:', selectedTrack.position); return null })()
+        )}
+        {selectedTrack && (
+          <Html position={selectedTrack.position || [0,0,0]} distanceFactor={0} center>
             <div style={{
               background: '#181818',
               color: '#fff',
