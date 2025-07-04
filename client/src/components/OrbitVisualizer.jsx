@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { colorPalette, getGenreColor } from '../utils/genreColors'
 
 function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
-  const [hoveredTrack, setHoveredTrack] = useState(null)
+  const [selectedTrack, setSelectedTrack] = useState(null)
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth-16,
     height: window.innerHeight-16
@@ -153,6 +153,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
         style={{ width: '100%', height: '100%', background: 'transparent' }}
         camera={{ position: [0, 0, 500], fov: 50, near: 0.1, far: 20000 }}
         gl={{ alpha: true }}
+        onPointerMissed={() => setSelectedTrack(null)}
       >
         <ambientLight intensity={0.6} />
         <directionalLight position={[5, 5, 5]} />
@@ -166,17 +167,9 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
                 32,
                 32
               ]}
-              onPointerOver={(e) => {
+              onClick={(e) => {
                 e.stopPropagation();
-                setHoveredTrack(track);
-              }}
-              onPointerOut={(e) => {
-                e.stopPropagation();
-                setHoveredTrack(null);
-              }}
-              onClick={() => {
-                if (track.external_urls?.spotify)
-                  window.open(track.external_urls.spotify, '_blank');
+                setSelectedTrack(track);
               }}
             >
               <meshStandardMaterial transparent opacity={0} />
@@ -193,8 +186,8 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           </group>
         ))}
 
-        {hoveredTrack && (
-          <Html position={hoveredTrack.position} distanceFactor={0} center>
+        {selectedTrack && (
+          <Html position={selectedTrack.position} distanceFactor={0} center>
             <div style={{
               background: '#181818',
               color: '#fff',
@@ -212,33 +205,62 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
               boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
               lineHeight: '1.5',
               border: '1px solid #1DB954',
-              pointerEvents: 'none'
+              pointerEvents: 'auto',
+              position: 'relative',
             }}>
+              <button onClick={() => setSelectedTrack(null)} style={{
+                position: 'absolute',
+                top: 8,
+                right: 8,
+                background: 'none',
+                border: 'none',
+                color: '#fff',
+                fontSize: 20,
+                cursor: 'pointer',
+                opacity: 0.7
+              }} aria-label="Close">×</button>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
-                {hoveredTrack.albumImage && (
+                {selectedTrack.albumImage && (
                   <img
-                    src={hoveredTrack.albumImage}
-                    alt={hoveredTrack.name}
+                    src={selectedTrack.albumImage}
+                    alt={selectedTrack.name}
                     style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', marginRight: 16 }}
                   />
                 )}
                 <div>
                   <div style={{ fontSize: '22px', fontWeight: '700', marginBottom: '4px' }}>
-                    {hoveredTrack.name}
+                    {selectedTrack.name}
                   </div>
                   <div style={{ fontSize: '18px', fontWeight: '500', marginBottom: '4px' }}>
-                    {hoveredTrack.artistName}
+                    {selectedTrack.artistName}
                   </div>
                 </div>
               </div>
               <div style={{ fontSize: '16px', marginBottom: '6px' }}>
                 <span style={{ color: '#1DB954', fontWeight: '600' }}>Genre: </span>
-                {hoveredTrack.genre.charAt(0).toUpperCase() + hoveredTrack.genre.slice(1)}
+                {selectedTrack.genre.charAt(0).toUpperCase() + selectedTrack.genre.slice(1)}
               </div>
               <div style={{ fontSize: '16px' }}>
                 <span style={{ color: '#1DB954', fontWeight: '600' }}>Score: </span>
-                {hoveredTrack.listenScore}
+                {selectedTrack.listenScore}
               </div>
+              {selectedTrack.external_urls?.spotify && (
+                <div style={{ marginTop: 12 }}>
+                  <a
+                    href={selectedTrack.external_urls.spotify}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: '#1DB954',
+                      fontWeight: 600,
+                      textDecoration: 'underline',
+                      fontSize: '16px',
+                    }}
+                  >
+                    Listen on Spotify
+                  </a>
+                </div>
+              )}
             </div>
           </Html>
         )}
