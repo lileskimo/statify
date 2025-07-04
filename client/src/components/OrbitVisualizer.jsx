@@ -266,6 +266,13 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
             </div>
           </Html>
         )}
+
+        {/* Minimal Html for debug: should always show at center of canvas */}
+        <Html position={[0,0,0]} distanceFactor={8} center transform>
+          <div style={{ background: '#1DB954', color: '#fff', padding: 12, borderRadius: 8 }}>
+            DEBUG: This should always show in the center
+          </div>
+        </Html>
       </Canvas>
       {/* Debug: Always show tooltip as a div outside the canvas if selectedTrack is set */}
       {selectedTrack && (
