@@ -1,8 +1,0 @@
-{
-    "build": {
-      "root": ".",
-      "buildCommand": "npm install --prefix client && npm run build --prefix client && npm install --prefix server",
-      "startCommand": "npm start --prefix server"
-    }
-  }
-  
