@@ -11,7 +11,7 @@ Built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, **Expres
 
 ## 📸 Demo
 
-- Check out the site [here](https://tender-spirit.up.railway.app)
+- [Demo Video](will add later)
 
 ---
 
@@ -65,16 +65,10 @@ Built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, **Expres
 ```
 /statify
 ├── /client        # React frontend
-│   ├── src/
-│   │   ├── components/
-│   │   │   └── OrbitVisualizer.jsx   # Main 3D visualization logic
-│   │   └── pages/
-│   ├── env.example                   # Client environment variables template
-│   └── package.json
+│   └── src
+│       └── components
+│           └── OrbitVisualizer.jsx   # Main 3D visualization logic
 ├── /server        # Node/Express backend
-│   ├── index.js                      # Main server file
-│   ├── env.example                   # Server environment variables template
-│   └── package.json
 └── README.md
 ```
 
@@ -96,12 +90,14 @@ cd statify
 ### 2️⃣ Install dependencies
 
 **Server**
+
 ```bash
 cd server
 npm install
 ```
 
 **Client**
+
 ```bash
 cd ../client
 npm install
@@ -109,97 +105,43 @@ npm install
 
 ---
 
-### 3️⃣ Set up Spotify API credentials
-
-1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-2. Create a new app
-3. Add `http://127.0.0.1:8888/callback` to your Redirect URIs
-4. Copy your **Client ID** and **Client Secret**
-
----
-
-### 4️⃣ Configure environment variables
-
-**Server Environment Variables**
+### 3️⃣ Set up environment variables
 
 Create a `.env` file in the `/server` directory:
 
-```bash
-cd server
-cp env.example .env
-```
-
-Edit the `.env` file with your Spotify credentials:
-
 ```ini
-# Spotify API Configuration
-SPOTIFY_CLIENT_ID=your_spotify_client_id_here
-SPOTIFY_CLIENT_SECRET=your_spotify_client_secret_here
+SPOTIFY_CLIENT_ID=your-client-id
+SPOTIFY_CLIENT_SECRET=your-client-secret
 SPOTIFY_REDIRECT_URI=http://127.0.0.1:8888/callback
-
-# Site URL (used for redirects)
-SITE_URL=http://127.0.0.1:3000
-
-# Server Configuration
-PORT=8888
 ```
 
-**Client Environment Variables**
-
-Create a `.env` file in the `/client` directory:
-
-```bash
-cd client
-cp env.example .env
-```
-
-Edit the `.env` file:
+Optionally, if needed in `/client/.env`:
 
 ```ini
-# Backend server URL (where your Express server is running)
-REACT_APP_SITE_URL=http://127.0.0.1:8888
 REACT_APP_BACKEND_URL=http://127.0.0.1:8888
 ```
 
 ---
 
-### 5️⃣ Start the development servers
+### 4️⃣ Start the development servers
 
 **Server**
+
 ```bash
 cd server
 node index.js
 ```
 
 **Client**
+
 In a new terminal tab:
+
 ```bash
 cd client
 npm start
 ```
 
 Visit `http://localhost:3000` in your browser.
-
----
-
-## 🔧 Environment Variables Reference
-
-### Server Environment Variables
-
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `SPOTIFY_CLIENT_ID` | Your Spotify app Client ID | - | ✅ |
-| `SPOTIFY_CLIENT_SECRET` | Your Spotify app Client Secret | - | ✅ |
-| `SPOTIFY_REDIRECT_URI` | OAuth redirect URI | `http://127.0.0.1:8888/callback` | ✅ |
-| `SITE_URL` | Frontend URL for redirects | `http://127.0.0.1:3000` | ✅ |
-| `PORT` | Server port | `8888` | ❌ |
-
-### Client Environment Variables
-
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `REACT_APP_SITE_URL` | Backend server URL | `http://127.0.0.1:8888` | ✅ |
-| `REACT_APP_BACKEND_URL` | Backend server URL (alternative) | `http://127.0.0.1:8888` | ✅ |
 
 ---
 
@@ -230,6 +172,7 @@ MIT License © 2025 [lileskimo](https://github.com/lileskimo)
 
 **Statify is not affiliated with or endorsed by Spotify.**
 
+
 ## 🧑‍💻 How It Works
 
 - **Spotify Login:**  
@@ -241,10 +184,28 @@ MIT License © 2025 [lileskimo](https://github.com/lileskimo)
 - **Genre Assignment:**  
   Each track is assigned a genre based on the top genre of its primary artist. The backend fetches genre information for all unique artists in your top tracks, ensuring accurate genre mapping.
 
-- **3D Visualization:**  
-  Tracks are positioned in 3D space using spherical coordinates. Genres with more tracks are spread further out radially, and each sphere's size represents the track's listen score. The visualization uses Three.js for smooth 3D rendering and interaction.
+- **3D Track Positioning:**  
+  Tracks are grouped by genre and distributed in 3D space using a custom orbit algorithm. Each genre occupies a distinct sector of the orbit, and genres with more tracks are spread further outwards to reduce crowding. The position of each track within its genre's region is randomized but stable, creating a visually appealing and informative soundscape.
 
-- **Environment Configuration:**  
-  The app uses environment variables for all configuration, making it easy to deploy to different environments. Server-side variables handle Spotify API credentials and server settings, while client-side variables configure API endpoints.
+- **Dynamic Sphere Sizing:**  
+  The size of each sphere is directly proportional to the track’s listen score, visually emphasizing your most-played tracks. Spheres are now 1.25x larger for improved visibility.
+
+- **Enhanced Hover Detection:**  
+  For a smooth user experience, each visible sphere is paired with a slightly larger, invisible sphere (1.2x the visible radius) to make hover detection easier and more forgiving.
+
+- **Interactive Tooltips:**  
+  Hovering over a sphere displays a tooltip at the sphere’s 3D position, rendered using Drei's `<Html>` component. The tooltip shows detailed information: track name, artist, genre, listen score, and album cover. Tooltips are styled to match Spotify’s theme and do not block pointer events.
+
+- **Spotify Integration:**  
+  Clicking on a sphere opens the corresponding track’s Spotify page in a new browser tab, allowing you to listen instantly.
+
+- **Shareable Highlights Card:**  
+  The right sidebar displays a vibrant, shareable card featuring your Spotify display name, top genres, top songs, and top artist. The card background uses a randomly generated, visually appealing gradient.
+
+- **Responsive Sidebar:**  
+  The sidebar is always visible on the right, summarizing your listening highlights and adapting to different screen sizes.
+
+- **Session & Account Handling:**  
+  Logging out clears your session and logs you out of Spotify, allowing you to safely switch accounts. All data is cleared from your browser session on logout or tab close.
 
 

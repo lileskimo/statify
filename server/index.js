@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 import SpotifyWebApi from 'spotify-web-api-node'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { dirname } from 'path'
 
 dotenv.config()
 
@@ -18,8 +17,6 @@ const spotifyApi = new SpotifyWebApi({
   redirectUri: process.env.SPOTIFY_REDIRECT_URI
 })
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-
 // Login Route
 app.get('/login', (req, res) => {
   const scopes = ['user-top-read', 'user-read-recently-played']
@@ -27,6 +24,7 @@ app.get('/login', (req, res) => {
   res.redirect(authorizeURL)
 })
 
+// Callback Route
 app.get('/callback', async (req, res) => {
   const { code } = req.query
   try {
@@ -103,9 +101,9 @@ app.get('/tracks', async (req, res) => {
     // Calculate listenScore and build final tracks array
     const finalTracks = Object.values(trackMap).map(track => {
       const listenScore = Math.round(
-        0.3 * (100 - track.short_rank) +
-        0.35 * (100 - track.medium_rank) +
-        0.35 * (100 - track.long_rank)
+        0.4 * (100 - track.short_rank) +
+        0.32 * (100 - track.medium_rank) +
+        0.28 * (100 - track.long_rank)
       )
       return {
         id: track.id,
@@ -149,11 +147,14 @@ app.get('/me', async (req, res) => {
   }
 })
 
-// Serve React build (from root-level client/build)
-app.use(express.static(path.join(__dirname, '../client/build')))
+// Serve React build
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+console.log('Serving static from:', path.join(__dirname, './build'))
+
+app.use(express.static(path.join(__dirname, './build')))
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'))
+  res.sendFile(path.join(__dirname, './build', 'index.html'))
 })
 
-const PORT = process.env.PORT || 8888
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+app.listen(8888, () => console.log('Server running on port 8888'))
