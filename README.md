@@ -1,5 +1,5 @@
 
-# 🎧 Statify
+# Statify
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![React](https://img.shields.io/badge/Built%20with-React-blue)](https://reactjs.org/)
@@ -10,57 +10,58 @@ It’s built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, *
 
 ---
 
-### 🌐 Live Demo: [https://tender-spirit.up.railway.app/](https://tender-spirit.up.railway.app/)
+### Live Demo: [https://tender-spirit.up.railway.app/](https://tender-spirit.up.railway.app/)
 
 ---
 
-## ✨ Features
+## Features
 
-- 🔒 Secure **Spotify OAuth login**
-- 🎵 Fetch **top tracks** across short, medium, and long-term history
-- 📝 Apply **weighted scoring** for tracks based on frequency and position
-- 🌌 3D Orbit Visualizer:
-  - 🎨 Color-coded by **genre**
-  - 📏 Sphere size proportional to **listening score**
-  - 🌍 Spatial position determined by **track popularity**
-  - 🖱️ Hover tooltips with detailed metadata and album art
-  - 🔗 Clickable spheres linking directly to Spotify tracks
-- 📊 Sidebar summarizing **user highlights**: display name, top genres, top songs, top artist
-- 📸 Shareable highlights card with dynamic gradient background
-- 🌑 Clean, responsive, dark-themed UI
-- 🔐 **Session-only, zero-persistence** data handling
+- Secure **Spotify OAuth login**
+- Fetch **top tracks** across short, medium, and long-term history
+- Apply **weighted scoring** for tracks based on frequency and position
+- 3D Orbit Visualizer:
+  - Color-coded by **genre**
+  - Sphere size proportional to **listening score**
+  - Spatial position determined by **track popularity**
+  - Hover tooltips with detailed metadata and album art
+  - Clickable spheres linking directly to Spotify tracks
+- Sidebar summarizing **user highlights**: display name, top genres, top songs, top artist
+- Shareable highlights card with dynamic gradient background
+- Clean, responsive, dark-themed UI
+- **Session-only, zero-persistence** data handling
 
 ---
 
-## 📊 How It Works (Technical)
+## How It Works
 
 - **OAuth Authentication**:  
-  Statify uses Spotify’s Authorization Code Flow to obtain an access token via a backend exchange, securely authenticating users and granting access to their top track data.
+  Uses Spotify’s Authorization Code Flow to securely exchange an auth code for an access token via the backend.
 
-- **Backend Data Aggregation**:  
-  The Node.js/Express backend retrieves top tracks across three time ranges (`short_term`, `medium_term`, `long_term`) using the [spotify-web-api-node](https://github.com/thelinmichael/spotify-web-api-node) package. It computes a **weighted listen score** for each track based on occurrence frequency and position across time periods.
+- **Data Aggregation**:  
+  The backend fetches top tracks for `short_term`, `medium_term`, and `long_term` ranges, calculating a weighted listen score based on frequency and ranking.
 
-- **Artist Genre Mapping**:  
-  Each unique track artist is queried via Spotify's API to retrieve genre information. Tracks are then assigned genres based on their primary artist’s top genre for visualization grouping.
+- **Genre Mapping**:  
+  Artist genres are fetched via the Spotify API, and tracks are categorized by their primary artist’s top genre.
 
-- **3D Spatial Mapping Algorithm**:  
-  Using **Three.js** and **React Three Fiber**, tracks are distributed within a 3D orbit. Each genre occupies a distinct sector of the orbital space. Track positions within a genre sector are randomized but stable for session consistency, with proximity to the center representing track popularity.
+- **3D Spatial Layout**:  
+  Tracks are distributed in a 3D orbit using Three.js and React Three Fiber. Genres occupy distinct sectors, with proximity to the center reflecting popularity.
 
-- **Dynamic Sphere Rendering**:  
-  Spheres representing tracks scale dynamically based on their listen score. Each is paired with a slightly larger, invisible mesh to extend hover detection areas for improved UX.
+- **Dynamic Sphere Scaling**:  
+  Sphere sizes correspond to listen scores, with larger invisible hitboxes for better hover detection.
 
 - **Interactive Tooltips**:  
-  Tooltips rendered using [@react-three/drei’s `<Html>`](https://github.com/pmndrs/drei) component display metadata (track title, artist, genre, listen score, album cover) at the precise 3D coordinate of the corresponding sphere.
+  Hovering a sphere displays metadata via Drei’s `<Html>` at the sphere’s 3D position.
 
-- **Spotify Integration**:  
-  Clicking a sphere opens the corresponding track’s Spotify page in a new tab.
+- **Spotify Linking**:  
+  Clicking a sphere opens the track on Spotify in a new tab.
 
-- **Session Management**:  
-  OAuth tokens are stored in `sessionStorage`. Data is fetched, processed, and visualized during the active session only, with no persistence or external storage.
+- **Session-Scoped Data**:  
+  Access tokens and data are stored in `sessionStorage` and cleared on logout or tab close.
+
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 
 **Frontend**
 - React
@@ -99,7 +100,7 @@ To deploy your own instance, follow [SETUP.md](./SETUP.md).
 
 ---
 
-## 📊 Privacy & Data Usage
+## Privacy & Data Usage
 
 - No personal data is stored, logged, or shared.
 - Spotify data is processed entirely in-session in the user’s browser.
