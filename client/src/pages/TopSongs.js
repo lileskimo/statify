@@ -127,8 +127,31 @@ function TopSongs() {
               )}
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{track.name}</div>
+                <div style={{ color: '#b3b3b3', fontSize: '1rem' }}>Artist: {track.artistName}</div>
                 <div style={{ color: '#b3b3b3', fontSize: '1rem' }}>Genre: {track.genre}</div>
                 <div style={{ color: '#888', fontSize: '0.95rem' }}>Score: {track.listenScore}</div>
+                {track.external_urls?.spotify && (
+                  <a
+                    href={track.external_urls.spotify}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-block',
+                      marginTop: 8,
+                      padding: '6px 16px',
+                      background: '#1DB954',
+                      color: '#fff',
+                      borderRadius: 6,
+                      fontWeight: 600,
+                      fontSize: '1rem',
+                      textDecoration: 'none',
+                      boxShadow: '0 2px 8px #0002',
+                      transition: 'background 0.2s',
+                    }}
+                  >
+                    Listen on Spotify
+                  </a>
+                )}
               </div>
             </li>
           ))}
