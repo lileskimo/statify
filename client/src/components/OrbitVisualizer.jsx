@@ -189,13 +189,13 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
         ))}
 
         {selectedTrack && (
-          <Html key={selectedTrack.id} position={[0,0,0]} distanceFactor={1} center>
+          <Html key={selectedTrack.id} position={selectedTrack.position ? [...selectedTrack.position] : [0,0,0]} distanceFactor={1} center>
             <div style={{
               background: '#181818',
               color: '#fff',
               padding: '18px 32px',
               borderRadius: '16px',
-              minWidth: '200px',
+              minWidth: '220px',
               width: 'auto',
               height: 'auto',
               whiteSpace: 'nowrap',
@@ -266,36 +266,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
             </div>
           </Html>
         )}
-
-        {/* Minimal Html for debug: should always show at center of canvas */}
-        <Html position={[0,0,0]} distanceFactor={1} center>
-          <div style={{ background: '#1DB954', color: '#fff', padding: '16px 24px', borderRadius: 8, fontSize: '1rem', minWidth: 220, textAlign: 'center' }}>
-            DEBUG: This should always show in the center
-          </div>
-        </Html>
       </Canvas>
-      {/* Debug: Always show tooltip as a div outside the canvas if selectedTrack is set */}
-      {selectedTrack && (
-        <div style={{
-          position: 'fixed',
-          top: 100,
-          left: 100,
-          zIndex: 9999,
-          background: '#222',
-          color: '#fff',
-          padding: '16px',
-          borderRadius: '10px',
-          border: '2px solid #1DB954',
-        }}>
-          <div><b>{selectedTrack.name}</b> by {selectedTrack.artistName}</div>
-          <div>Genre: {selectedTrack.genre}</div>
-          <div>Score: {selectedTrack.listenScore}</div>
-          {selectedTrack.external_urls?.spotify && (
-            <a href={selectedTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" style={{ color: '#1DB954' }}>Listen on Spotify</a>
-          )}
-          <button onClick={() => setSelectedTrack(null)} style={{ marginLeft: 12, color: '#fff', background: '#1DB954', border: 'none', borderRadius: 4, padding: '4px 8px', cursor: 'pointer' }}>Close</button>
-        </div>
-      )}
     </div>
   )
 }
