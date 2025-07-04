@@ -116,7 +116,8 @@ function TopSongs() {
               background: i % 2 === 0 ? 'rgba(48,209,88,0.07)' : 'rgba(255,255,255,0.03)',
               display: 'flex',
               alignItems: 'center',
-              gap: '1.2rem'
+              gap: '1.2rem',
+              justifyContent: 'space-between'
             }}>
               {track.albumImage && (
                 <img
@@ -125,34 +126,35 @@ function TopSongs() {
                   style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', boxShadow: '0 2px 8px #0004' }}
                 />
               )}
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{track.name}</div>
-                <div style={{ color: '#b3b3b3', fontSize: '1rem' }}>Artist: {track.artistName}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 600, fontSize: '1.1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.name}</div>
+                <div style={{ color: '#b3b3b3', fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Artist: {track.artistName}</div>
                 <div style={{ color: '#b3b3b3', fontSize: '1rem' }}>Genre: {track.genre}</div>
                 <div style={{ color: '#888', fontSize: '0.95rem' }}>Score: {track.listenScore}</div>
-                {track.external_urls?.spotify && (
-                  <a
-                    href={track.external_urls.spotify}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-block',
-                      marginTop: 8,
-                      padding: '6px 16px',
-                      background: '#1DB954',
-                      color: '#fff',
-                      borderRadius: 6,
-                      fontWeight: 600,
-                      fontSize: '1rem',
-                      textDecoration: 'none',
-                      boxShadow: '0 2px 8px #0002',
-                      transition: 'background 0.2s',
-                    }}
-                  >
-                    Listen on Spotify
-                  </a>
-                )}
               </div>
+              {track.external_urls?.spotify && (
+                <a
+                  href={track.external_urls.spotify}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-block',
+                    marginLeft: 16,
+                    padding: '6px 16px',
+                    background: '#1DB954',
+                    color: '#fff',
+                    borderRadius: 6,
+                    fontWeight: 600,
+                    fontSize: '1rem',
+                    textDecoration: 'none',
+                    boxShadow: '0 2px 8px #0002',
+                    transition: 'background 0.2s',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Listen on Spotify
+                </a>
+              )}
             </li>
           ))}
         </ol>
