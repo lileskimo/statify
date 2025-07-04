@@ -2,6 +2,7 @@ import { Canvas, useThree } from '@react-three/fiber'
 import { OrbitControls, Sphere, Html } from '@react-three/drei'
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { colorPalette, getGenreColor } from '../utils/genreColors'
+import * as THREE from 'three'
 
 function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
   const [selectedTrack, setSelectedTrack] = useState(null)
@@ -144,7 +145,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
     useEffect(() => {
       if (!position3D) return;
       // Project 3D position to normalized device coordinates (NDC)
-      const vector = new window.THREE.Vector3(...position3D);
+      const vector = new THREE.Vector3(...position3D);
       vector.project(camera);
       // Convert NDC to screen coordinates
       const x = (vector.x + 1) / 2 * size.width;
