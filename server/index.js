@@ -149,12 +149,11 @@ app.get('/me', async (req, res) => {
   }
 })
 
-// Serve React build
-app.use(express.static(path.join(__dirname, "../client/build")));
+// Serve React build (from root-level client/build)
+app.use(express.static(path.join(__dirname, '../client/build')))
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'))
+})
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
-
-const PORT = 8080;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 8888
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
