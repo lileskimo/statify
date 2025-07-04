@@ -137,46 +137,28 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
   const orbitMaxWidth = isWide ? 'clamp(340px, 75vw, 1200px)' : 'clamp(340px, 95vw, 900px)';
   const cardMaxWidth = isWide ? 'clamp(320px, 20vw, 540px)' : 'clamp(240px, 90vw, 810px)';
 
-  // Helper to project 3D position to 2D screen coordinates
-  function useScreenPosition(position3D) {
-    const { camera, size } = useThree();
-    const [screenPos, setScreenPos] = useState(null);
-
-    useEffect(() => {
-      if (!position3D) return;
-      // Project 3D position to normalized device coordinates (NDC)
-      const vector = new THREE.Vector3(...position3D);
-      vector.project(camera);
-      // Convert NDC to screen coordinates
-      const x = (vector.x + 1) / 2 * size.width;
-      const y = (-vector.y + 1) / 2 * size.height;
-      setScreenPos({ x, y });
-    }, [position3D, camera, size]);
-
-    return screenPos;
-  }
-
-  // Tooltip component rendered in DOM at screen position
-  function TrackTooltip({ track, position3D, onClose }) {
-    const screenPos = useScreenPosition(position3D);
-    if (!screenPos) return null;
+  // Simple tooltip at top-right of the container
+  function TrackTooltip({ track, onClose }) {
     return (
       <div style={{
-        position: 'fixed',
-        left: screenPos.x,
-        top: screenPos.y - 80, // 80px above the point
+        position: 'absolute',
+        top: 24,
+        right: 24,
         zIndex: 9999,
         background: '#181818',
         color: '#fff',
         padding: '18px 32px',
         borderRadius: '16px',
-        minWidth: '220px',
+        minWidth: '240px',
+        maxWidth: '340px',
         boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
         border: '1px solid #1DB954',
         pointerEvents: 'auto',
         fontFamily: 'sans-serif',
         lineHeight: '1.5',
-        transform: 'translate(-50%, 0)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
       }}>
         <button onClick={onClose} style={{
           position: 'absolute',
@@ -189,7 +171,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           cursor: 'pointer',
           opacity: 0.7
         }} aria-label="Close">×</button>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12, width: '100%' }}>
           {track.albumImage && (
             <img
               src={track.albumImage}
@@ -197,9 +179,9 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
               style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', marginRight: 16 }}
             />
           )}
-          <div>
-            <div style={{ fontSize: '22px', fontWeight: '700', marginBottom: '4px' }}>{track.name}</div>
-            <div style={{ fontSize: '18px', fontWeight: '500', marginBottom: '4px' }}>{track.artistName}</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '22px', fontWeight: '700', marginBottom: '4px', wordBreak: 'break-word' }}>{track.name}</div>
+            <div style={{ fontSize: '18px', fontWeight: '500', marginBottom: '4px', wordBreak: 'break-word' }}>{track.artistName}</div>
           </div>
         </div>
         <div style={{ fontSize: '16px', marginBottom: '6px' }}>
@@ -282,9 +264,9 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           </group>
         ))}
       </Canvas>
-      {/* Render the DOM tooltip above the clicked sphere, OUTSIDE the Canvas */}
-      {selectedTrack && selectedTrack.position && (
-        <TrackTooltip track={selectedTrack} position3D={selectedTrack.position} onClose={() => setSelectedTrack(null)} />
+      {/* Render the simple tooltip at the top-right corner of the container */}
+      {selectedTrack && (
+        <TrackTooltip track={selectedTrack} onClose={() => setSelectedTrack(null)} />
       )}
     </div>
   )
