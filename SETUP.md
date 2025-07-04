@@ -1,7 +1,7 @@
 
-# 🚀 Statify — Local Setup & Deployment Guide
+# 🚀 Statify — Local Setup Guide
 
-This document provides detailed instructions to run Statify locally and deploy it via Railway.
+This document provides detailed instructions to run Statify locally.
 
 ---
 
@@ -69,20 +69,6 @@ npm start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## 📦 Deploying to Railway
-
-1. Push your project to GitHub
-2. Sign up at [https://railway.app/](https://railway.app/)
-3. Create a new project and connect your GitHub repository
-4. Add environment variables for the server service:
-   - `SPOTIFY_CLIENT_ID`
-   - `SPOTIFY_CLIENT_SECRET`
-   - `SPOTIFY_REDIRECT_URI` (use your Railway backend URL + `/callback`)
-5. Deploy both frontend and backend services
-6. Update your frontend’s `REACT_APP_BACKEND_URL` if necessary in Railway settings or client `.env`
 
 ---
 
