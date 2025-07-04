@@ -86,7 +86,7 @@ function TopSongs() {
   return (
     <div
       style={{
-        maxWidth: '800px',
+        maxWidth: '90vw',
         width: '100%',
         margin: '3rem auto',
         background: 'rgba(28,28,30,0.95)',
@@ -100,6 +100,7 @@ function TopSongs() {
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
+        boxSizing: 'border-box',
       }}
     >
       <h2 style={{ fontSize: 'clamp(1.3rem, 6vw, 2.2rem)', fontWeight: 700, marginBottom: '2rem', textAlign: 'center' }}>
@@ -109,9 +110,11 @@ function TopSongs() {
         flex: 1,
         overflowY: 'auto',
         minHeight: 0,
-        paddingRight: 8
+        paddingRight: 8,
+        width: '100%',
+        boxSizing: 'border-box',
       }}>
-        <ol style={{ padding: 0, margin: 0, listStyle: 'decimal inside' }}>
+        <ol style={{ padding: 0, margin: 0, listStyle: 'decimal inside', width: '100%', boxSizing: 'border-box' }}>
           {tracks.map((track, i) => (
             <li key={track.id || (track.name + i)} style={{
               marginBottom: '1.2rem',
@@ -121,7 +124,11 @@ function TopSongs() {
               display: 'flex',
               alignItems: 'center',
               gap: '1.2rem',
-              justifyContent: 'space-between'
+              justifyContent: 'space-between',
+              minWidth: 0,
+              width: '100%',
+              boxSizing: 'border-box',
+              overflow: 'hidden',
             }}>
               {track.albumImage && (
                 <img
@@ -130,7 +137,7 @@ function TopSongs() {
                   style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', boxShadow: '0 2px 8px #0004' }}
                 />
               )}
-              <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
                 <div style={{ fontWeight: 600, fontSize: '1.1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.name}</div>
                 <div style={{ color: '#b3b3b3', fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Artist: {track.artistName}</div>
                 <div style={{ color: '#b3b3b3', fontSize: '1rem' }}>Genre: {track.genre}</div>
