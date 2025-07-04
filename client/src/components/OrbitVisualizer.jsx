@@ -163,7 +163,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           borderRadius: '16px',
           minWidth: '100px',
           maxWidth: '80vw',
-          width: '100%',
+          width: '80%',
           boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
           border: '1px solid #1DB954',
           pointerEvents: 'auto',
