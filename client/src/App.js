@@ -3,7 +3,8 @@ import Home from './pages/Home'
 import Visualizer from './pages/Visualizer'
 import Callback from './pages/Callback'
 import TopSongs from './pages/TopSongs'
-import Info from './pages/Info' // <-- Add this import
+import Info from './pages/Info'
+import Recent from './pages/Recent'
 import Navbar from './components/Navbar'
 import './App.css'
 import { Canvas } from '@react-three/fiber'
@@ -77,6 +78,7 @@ function App() {
             <Route path="/callback" element={<Callback />} />
             <Route path="/visualizer" element={<Visualizer />} />
             <Route path="/topsongs" element={<TopSongs />} />
+            <Route path="/recent" element={<Recent />} /> {/* Add this line */}
             <Route path="/info" element={<Info />} />
           </Routes>
         </main>

@@ -70,6 +70,9 @@ function Navbar() {
               <Link to="/info" style={{ color: '#fff', fontWeight: 500, fontSize: '1.1rem' }} onClick={() => setMenuOpen(false)}>
                 Info
               </Link>
+              <Link to="/recent" style={{ color: '#fff', fontWeight: 500, fontSize: '1.1rem' }} onClick={() => setMenuOpen(false)}>
+                Recently Played
+              </Link>
               {token && (
                 <button
                   onClick={() => { setMenuOpen(false); handleLogout(); }}
@@ -106,6 +109,9 @@ function Navbar() {
             </Link>
             <Link to="/info" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
               Info
+            </Link>
+            <Link to="/recent" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
+              Recently Played
             </Link>
           </div>
           <div style={{ fontSize: '1rem', color: '#b3b3b3', fontWeight: 400 }}>
