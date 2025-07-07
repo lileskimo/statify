@@ -5,7 +5,7 @@
 [![React](https://img.shields.io/badge/Built%20with-React-blue)](https://reactjs.org/)
 [![Three.js](https://img.shields.io/badge/3D%20Graphics-Three.js-orange)](https://threejs.org/)
 
-**Statify** is a dark-themed, interactive web application that visualizes your Spotify listening habits as a 3D soundscape of orbits.  
+**Statify** is an interactive web application that visualizes your Spotify listening habits as a 3D soundscape.  
 It’s built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, **Express**, and the **Spotify Web API**.
 
 ---
@@ -19,15 +19,11 @@ It’s built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, *
 
 - Secure **Spotify OAuth login**
 - Fetch **top tracks** across short, medium, and long-term history
-- Apply **weighted scoring** for tracks based on frequency and position
 - 3D Orbit Visualizer:
-  - Color-coded by **genre**
   - Sphere size proportional to **listening score**
-  - Spatial position determined by **track popularity**
-  - Hover tooltips with detailed metadata and album art
-  - Clickable spheres linking directly to Spotify tracks
-- Sidebar summarizing **user highlights**: display name, top genres, top songs, top artist
-- Shareable highlights card with dynamic gradient background
+  - Spatial position and color determined by **genre**
+  - Tooltips with detailed metadata, album art and Spotify track link
+- Card summarizing **user highlights**: display name, top genres, top songs, top artist
 - Clean, responsive, dark-themed UI
 - **Session-only, zero-persistence** data handling
 
@@ -45,16 +41,16 @@ It’s built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, *
   Artist genres are fetched via the Spotify API, and tracks are categorized by their primary artist’s top genre.
 
 - **3D Spatial Layout**:  
-  Tracks are distributed in a 3D orbit using Three.js and React Three Fiber. Genres occupy distinct sectors, with proximity to the center reflecting popularity.
+  Tracks are distributed in a 3D orbit using Three.js and React Three Fiber. Genres occupy distinct sectors.
 
 - **Dynamic Sphere Scaling**:  
-  Sphere sizes correspond to listen scores, with larger invisible hitboxes for better hover detection.
+  Sphere sizes correspond to listen scores, with larger invisible hitboxes for better click detection.
 
 - **Interactive Tooltips**:  
-  Hovering a sphere displays metadata via Drei’s `<Html>` at the sphere’s 3D position.
+  Clicking a sphere displays metadata via Drei’s `<Html>` at the sphere’s 3D position.
 
 - **Spotify Linking**:  
-  Clicking a sphere opens the track on Spotify in a new tab.
+  Clicking a sphere opens the track tooltip with details and Spotify link for the associated song.
 
 - **Session-Scoped Data**:  
   Access tokens and data are stored in `sessionStorage` and cleared on logout or tab close.
