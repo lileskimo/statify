@@ -96,7 +96,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           } while (
             genrePositions.some(([gx, gy, gz]) =>
               Math.sqrt((gx - pos[0]) ** 2 + (gy - pos[1]) ** 2 + (gz - pos[2]) ** 2) < minDist
-            ) && attempts < 100 // even more attempts for better separation
+            ) && attempts < 1000
           );
           positionsRef.current[track.id] = pos;
           genrePositions.push(pos);
@@ -153,7 +153,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
       <div
         ref={ref}
         style={{
-          position: 'absolute', // changed from 'relative' to 'absolute'
+          position: 'absolute',
           top: 24,
           right: 24,
           zIndex: 9999,
@@ -161,8 +161,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           color: '#fff',
           padding: '18px 32px',
           borderRadius: '16px',
-          width: '280px',
-          maxWidth: '75vw',
+          width: 'min(280px, 70vw)',
           boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
           border: '1px solid #1DB954',
           pointerEvents: 'auto',
