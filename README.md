@@ -94,10 +94,9 @@ It’s built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, *
 
 ---
 
-## 📦 Deployment
+## 📦 Local Setup
 
-Hosted on [Railway](https://railway.app/).  
-To deploy your own instance, follow [SETUP.md](./SETUP.md).
+To setup Statify on your device, follow [SETUP.md](./SETUP.md).
 
 ---
 
