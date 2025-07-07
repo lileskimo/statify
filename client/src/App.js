@@ -77,7 +77,7 @@ function App() {
             <Route path="/callback" element={<Callback />} />
             <Route path="/visualizer" element={<Visualizer />} />
             <Route path="/topsongs" element={<TopSongs />} />
-            <Route path="/info" element={<Info />} /> {/* <-- Add this route */}
+            <Route path="/info" element={<Info />} />
           </Routes>
         </main>
         <footer
