@@ -153,7 +153,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
       <div
         ref={ref}
         style={{
-          position: 'relative',
+          position: 'absolute', // changed from 'relative' to 'absolute'
           top: 24,
           right: 24,
           zIndex: 9999,
@@ -235,6 +235,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
   return (
     <div
       style={{
+        position: 'relative', // add this line
         flex: isWide ? '1 1 0' : 'unset',
         maxWidth: orbitMaxWidth,
         minWidth: cardMaxWidth,
