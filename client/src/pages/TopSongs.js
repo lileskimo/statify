@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-const API_URL = 'https://tender-spirit.up.railway.app'
-
 function TopSongs() {
   const [tracks, setTracks] = useState([])
   const [loading, setLoading] = useState(true)
@@ -24,7 +22,7 @@ function TopSongs() {
       return
     }
 
-    axios.get(`${API_URL}/tracks`, { headers: { Authorization: `Bearer ${token}` } })
+    axios.get(`/api/tracks`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         setTracks(res.data)
         setLoading(false)
