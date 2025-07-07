@@ -11,6 +11,7 @@ It’s built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, *
 ---
 
 ### Live Demo: [https://tender-spirit.up.railway.app/](https://tender-spirit.up.railway.app/)
+(Send over the e-mail ID associated with your Spotify account to use the live demo)
 
 ---
 
