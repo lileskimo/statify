@@ -134,8 +134,8 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
     return Math.max(0.5, Math.min(1, minDim / base));
   }, [windowSize]);
 
-  const orbitMaxWidth = isWide ? 'clamp(340px, 75vw, 1200px)' : 'clamp(340px, 95vw, 900px)';
-  const cardMaxWidth = isWide ? 'clamp(320px, 20vw, 540px)' : 'clamp(240px, 90vw, 810px)';
+  const orbitMaxWidth = isWide ? 'clamp(340px, 85vw, 1400px)' : 'clamp(340px, 98vw, 1100px)'; // made bigger
+  const cardMaxWidth = isWide ? 'clamp(220px, 14vw, 400px)' : 'clamp(180px, 80vw, 600px)'; // made smaller
 
   // Simple tooltip at top-right of the container
   function TrackTooltip({ track, onClose }) {
@@ -235,7 +235,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
   return (
     <div
       style={{
-        position: 'relative', // add this line
+        position: 'relative',
         flex: isWide ? '1 1 0' : 'unset',
         maxWidth: orbitMaxWidth,
         minWidth: cardMaxWidth,
