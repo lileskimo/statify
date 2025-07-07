@@ -107,11 +107,11 @@ function Navbar() {
             <Link to="/topsongs" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
               Top Songs
             </Link>
-            <Link to="/info" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
-              Info
-            </Link>
             <Link to="/recent" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
               Recently Played
+            </Link>
+            <Link to="/info" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
+              Info
             </Link>
           </div>
           <div style={{ fontSize: '1rem', color: '#b3b3b3', fontWeight: 400 }}>
