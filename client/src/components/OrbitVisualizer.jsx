@@ -153,7 +153,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
       <div
         ref={ref}
         style={{
-          position: 'absolute',
+          position: 'relative',
           top: 24,
           right: 24,
           zIndex: 9999,
