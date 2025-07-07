@@ -10,8 +10,8 @@ It’s built with **React**, **Three.js**, **React Three Fiber**, **Node.js**, *
 
 ---
 
-### Live Demo: [https://tender-spirit.up.railway.app/](https://tender-spirit.up.railway.app/)
-(Send over the e-mail ID associated with your Spotify account to use the live demo)
+### Live Demo: [https://statifyforspotify.vercel.app](https://statifyforspotify.vercel.app)
+(Send over an email with the e-mail ID associated with your Spotify account to [kaustubh.salodkar13@gmail.com](kaustubh.salodkar13@gmail.com) to use the live demo)
 
 ---
 
