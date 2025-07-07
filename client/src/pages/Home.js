@@ -85,27 +85,32 @@ export default function Home() {
       </p>
 
       {/* Main Action Area */}
-      <div style={{ marginTop: '2.5rem', zIndex: 10, display: 'flex', gap: '1.5rem', marginBottom: '3.5rem' }}>
+      <div style={{ marginTop: '2.5rem', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', marginBottom: '3.5rem' }}>
         {!token ? (
-          <button
-            onClick={handleLogin}
-            style={{
-              background: '#1DB954',
-              color: 'black',
-              fontSize: '1.125rem',
-              fontWeight: 600,
-              padding: '0.75rem 2rem',
-              borderRadius: '0.5rem',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'background 0.2s',
-            }}
-            onMouseOver={e => (e.currentTarget.style.background = '#e03d00')}
-            onMouseOut={e => (e.currentTarget.style.background = '#1DB954')}
-          >
-            Login with Spotify
-          </button>
+          <>
+            <button
+              onClick={handleLogin}
+              style={{
+                background: '#1DB954',
+                color: 'black',
+                fontSize: '1.125rem',
+                fontWeight: 600,
+                padding: '0.75rem 2rem',
+                borderRadius: '0.5rem',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'background 0.2s',
+              }}
+              onMouseOver={e => (e.currentTarget.style.background = '#e03d00')}
+              onMouseOut={e => (e.currentTarget.style.background = '#1DB954')}
+            >
+              Login with Spotify
+            </button>
+            <span style={{ color: '#b3b3b3', fontSize: '0.98rem', marginTop: '0.5rem', textAlign: 'center', maxWidth: 340 }}>
+              Drop an email here (<a href="mailto:kaustubh.salodkar13@gmail.com" style={{ color: '#1DB954', textDecoration: 'underline' }}>kaustubh.salodkar13@gmail.com</a>) with your Spotify associated email ID if you are using Statify for the first time. We will notify you once access is enabled from our end.
+            </span>
+          </>
         ) : (
           <>
             <button
@@ -146,6 +151,9 @@ export default function Home() {
             >
               Top Songs
             </button>
+            <span style={{ color: '#b3b3b3', fontSize: '1rem', marginTop: '1.2rem', textAlign: 'center', maxWidth: 340 }}>
+              Check the <a href="/info" style={{ color: '#1DB954', textDecoration: 'underline' }}>Info</a> page to know more about how to use and understand Statify.
+            </span>
           </>
         )}
       </div>
