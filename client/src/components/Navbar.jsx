@@ -67,11 +67,11 @@ function Navbar() {
               <Link to="/topsongs" style={{ color: '#fff', fontWeight: 500, fontSize: '1.1rem' }} onClick={() => setMenuOpen(false)}>
                 Top Songs
               </Link>
-              <Link to="/info" style={{ color: '#fff', fontWeight: 500, fontSize: '1.1rem' }} onClick={() => setMenuOpen(false)}>
-                Info
-              </Link>
               <Link to="/recent" style={{ color: '#fff', fontWeight: 500, fontSize: '1.1rem' }} onClick={() => setMenuOpen(false)}>
                 Recently Played
+              </Link>
+              <Link to="/info" style={{ color: '#fff', fontWeight: 500, fontSize: '1.1rem' }} onClick={() => setMenuOpen(false)}>
+                Info
               </Link>
               {token && (
                 <button

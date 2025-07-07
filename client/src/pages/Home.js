@@ -151,6 +151,25 @@ export default function Home() {
             >
               Top Songs
             </button>
+            <button
+              onClick={() => navigate('/recent')}
+              style={{
+                background: '#222',
+                color: '#fff',
+                fontSize: '1.125rem',
+                fontWeight: 600,
+                padding: '0.75rem 2rem',
+                borderRadius: '0.5rem',
+                border: 'none',
+                cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
+                transition: 'background 0.2s',
+              }}
+              onMouseOver={e => (e.currentTarget.style.background = '#1DB954')}
+              onMouseOut={e => (e.currentTarget.style.background = '#222')}
+            >
+              Recently Played
+            </button>
             <span style={{ color: '#b3b3b3', fontSize: '1rem', marginTop: '1.2rem', textAlign: 'center', maxWidth: 340 }}>
               Check the <a href="/info" style={{ color: '#1DB954', textDecoration: 'underline' }}>Info</a> page to know more about how to use and understand Statify.
             </span>
