@@ -272,7 +272,7 @@ function Visualizer() {
           padding: '2.2rem 2.5rem',
           borderRadius: isDownloadMode ? '0px' : '22px',
           background: isDownloadMode
-            ? 'linear-gradient(135deg,rgb(4, 36, 15) 0%, #23242a 55%,rgb(22, 93, 47) 100%)'
+            ? 'linear-gradient(135deg,rgb(42, 57, 47) 0%, #23242a 55%,rgb(22, 93, 47) 100%)'
             : 'linear-gradient(135deg, rgba(40,40,48,0.96) 60%, rgba(30,60,60,0.98) 100%)',
           border: isDownloadMode
             ? '2px solid #23242a'
@@ -399,31 +399,25 @@ function Visualizer() {
                 </div>
               </div>
             )}
-            {/* Most/Least Popular Songs Row (side by side, below obscurity) */}
+            {/* Most/Least Popular Songs Row (now vertical, center-aligned, below obscurity) */}
             <div style={{
               display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
+              flexDirection: 'column',
               alignItems: 'center',
+              justifyContent: 'center',
               marginTop: '0.2rem',
-              flexWrap: 'nowrap',
               width: '100%',
-              gap: 0,
             }}>
               {mostPopular && (
-                <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#FFD700', fontWeight: 600, fontSize: '1.08rem', textAlign: 'center' }}>
+                <div style={{ color: '#FFD700', fontWeight: 600, fontSize: '1.08rem', textAlign: 'center', marginBottom: '0.7rem', wordBreak: 'break-word' }}>
                   Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
                   <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
                     (popularity {mostPopular.popularity})
                   </span>
                 </div>
               )}
-              {/* Vertical Separator */}
-              {mostPopular && leastPopular && (
-                <div style={{ width: '6%', minWidth: 8, maxWidth: 18, height: '70%', alignSelf: 'center', background: 'rgba(180,180,180,0.22)', margin: '0 0.4rem' }} />
-              )}
               {leastPopular && (
-                <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#FF6F61', fontWeight: 600, fontSize: '1.08rem', textAlign: 'center' }}>
+                <div style={{ color: '#FF6F61', fontWeight: 600, fontSize: '1.08rem', textAlign: 'center', marginBottom: '0.2rem', wordBreak: 'break-word' }}>
                   Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
                   <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
                     (popularity {leastPopular.popularity})
