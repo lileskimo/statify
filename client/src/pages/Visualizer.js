@@ -359,7 +359,7 @@ function Visualizer() {
               gap: 0,
             }}>
               {/* Top Genres */}
-              <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
                 <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
                   Top Genres
                 </div>
@@ -377,9 +377,9 @@ function Visualizer() {
                 ))}
               </div>
               {/* Vertical Separator */}
-              <div style={{ width: '6%', minWidth: 8, maxWidth: 18, height: '70%', alignSelf: 'center', background: 'rgba(180,180,180,0.22)', margin: '0 0.4rem' }} />
+              <div style={{ width: '6%', minWidth: 10, maxWidth: 22, height: '70%', alignSelf: 'center', background: 'rgba(180,180,180,0.45)', margin: '0 0.4rem', borderRadius: 1 }} />
               {/* Top Artist */}
-              <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
                 <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
                   Top Artist
                 </div>
@@ -411,7 +411,7 @@ function Visualizer() {
               gap: 0,
             }}>
               {mostPopular && (
-                <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#FFD700', fontWeight: 600, fontSize: '1.08rem', textAlign: 'right' }}>
+                <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', color: '#FFD700', fontWeight: 600, fontSize: '1.08rem', textAlign: 'left' }}>
                   Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
                   <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
                     (popularity {mostPopular.popularity})
@@ -423,7 +423,7 @@ function Visualizer() {
                 <div style={{ width: '6%', minWidth: 8, maxWidth: 18, height: '70%', alignSelf: 'center', background: 'rgba(180,180,180,0.22)', margin: '0 0.4rem' }} />
               )}
               {leastPopular && (
-                <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#FF6F61', fontWeight: 600, fontSize: '1.08rem', textAlign: 'right' }}>
+                <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', color: '#FF6F61', fontWeight: 600, fontSize: '1.08rem', textAlign: 'left' }}>
                   Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
                   <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
                     (popularity {leastPopular.popularity})
