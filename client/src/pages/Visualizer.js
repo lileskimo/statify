@@ -359,7 +359,7 @@ function Visualizer() {
               width: '100%',
             }}>
               {/* Top Genres */}
-              <div style={{ minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
+              <div style={{ minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
                   Top Genres
                 </div>
@@ -377,9 +377,9 @@ function Visualizer() {
                 ))}
               </div>
               {/* Vertical Separator */}
-              <div style={{ width: 1, minWidth: 1, height: 60, alignSelf: 'center', background: 'rgba(180,180,180,0.22)', margin: '0 0.7rem' }} />
+              <div style={{ width: 1, minWidth: 1, height: '70%', alignSelf: 'center', background: 'rgba(180,180,180,0.22)', margin: '0 0.7rem' }} />
               {/* Top Artist */}
-              <div style={{ minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
+              <div style={{ minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
                   Top Artist
                 </div>
@@ -411,7 +411,7 @@ function Visualizer() {
               width: '100%',
             }}>
               {mostPopular && (
-                <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600, textAlign: 'right', minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
+                <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600, textAlign: 'right', minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
                   <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
                     (popularity {mostPopular.popularity})
@@ -420,10 +420,10 @@ function Visualizer() {
               )}
               {/* Vertical Separator */}
               {mostPopular && leastPopular && (
-                <div style={{ width: 1, minWidth: 1, height: 60, alignSelf: 'center', background: 'rgba(180,180,180,0.22)', margin: '0 0.7rem' }} />
+                <div style={{ width: 1, minWidth: 1, height: '70%', alignSelf: 'center', background: 'rgba(180,180,180,0.22)', margin: '0 0.7rem' }} />
               )}
               {leastPopular && (
-                <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600, textAlign: 'right', minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
+                <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600, textAlign: 'right', minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
                   <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
                     (popularity {leastPopular.popularity})
