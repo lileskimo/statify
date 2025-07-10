@@ -311,7 +311,8 @@ function Visualizer() {
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1DB954" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="12" y1="5" x2="12" y2="17" />
-            <polyline points="8 13 12 17 16 13" />
+            <line x1="9" y1="14" x2="12" y2="17" />
+            <line x1="15" y1="14" x2="12" y2="17" />
             <line x1="6" y1="19" x2="18" y2="19" />
           </svg>
         </button>
