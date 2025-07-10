@@ -272,7 +272,7 @@ function Visualizer() {
           padding: '2.2rem 2.5rem',
           borderRadius: '22px',
           background: isDownloadMode
-            ? 'linear-gradient(135deg, #2b3a4b 0%, #23242a 55%, #1db954 100%)'
+            ? 'linear-gradient(135deg,rgb(35, 161, 79) 0%, #23242a 55%,rgb(35, 161, 79) 100%)'
             : 'linear-gradient(135deg, rgba(40,40,48,0.96) 60%, rgba(30,60,60,0.98) 100%)',
           border: isDownloadMode
             ? '2px solid #23242a'
@@ -355,10 +355,11 @@ function Visualizer() {
               alignItems: 'flex-start',
               gap: '2.5rem',
               marginBottom: '1.2rem',
-              flexWrap: 'wrap'
+              flexWrap: 'wrap',
+              width: '100%',
             }}>
               {/* Top Genres */}
-              <div>
+              <div style={{ minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
                 <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
                   Top Genres
                 </div>
@@ -370,16 +371,19 @@ function Visualizer() {
                       marginBottom: '0.18em',
                       fontWeight: 500,
                       fontSize: '1.05rem',
-                      textAlign: 'center'
+                      textAlign: 'center',
+                      wordBreak: 'break-word'
                     }}>{g}</div>
                 ))}
               </div>
+              {/* Vertical Separator */}
+              <div style={{ width: 1, minWidth: 1, alignSelf: 'stretch', background: 'rgba(180,180,180,0.22)', margin: '0 1.2rem' }} />
               {/* Top Artist */}
-              <div>
+              <div style={{ minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
                 <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
                   Top Artist
                 </div>
-                <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center' }}>
+                <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center', wordBreak: 'break-word' }}>
                   {topArtist}
                 </div>
               </div>
@@ -403,18 +407,23 @@ function Visualizer() {
               alignItems: 'flex-start',
               gap: '2.5rem',
               marginTop: '0.2rem',
-              flexWrap: 'wrap'
+              flexWrap: 'wrap',
+              width: '100%',
             }}>
               {mostPopular && (
-                <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600, textAlign: 'right' }}>
+                <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600, textAlign: 'right', minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
                   Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
                   <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
                     (popularity {mostPopular.popularity})
                   </span>
                 </div>
               )}
+              {/* Vertical Separator */}
+              {mostPopular && leastPopular && (
+                <div style={{ width: 1, minWidth: 1, alignSelf: 'stretch', background: 'rgba(180,180,180,0.22)', margin: '0 1.2rem' }} />
+              )}
               {leastPopular && (
-                <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600, textAlign: 'right' }}>
+                <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600, textAlign: 'right', minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
                   Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
                   <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
                     (popularity {leastPopular.popularity})
