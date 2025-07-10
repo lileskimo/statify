@@ -131,8 +131,11 @@ function Visualizer() {
   const cardMinWidth = isWide ? '240px' : '100px'
 
   // Download handler
+  const [isDownloadMode, setIsDownloadMode] = useState(false);
+
   const handleDownloadCard = async () => {
     if (!cardRef.current) return;
+    setIsDownloadMode(true);
 
     // Clone the card for download
     const cardClone = cardRef.current.cloneNode(true);
@@ -184,6 +187,8 @@ function Visualizer() {
     link.download = 'statify-card.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
+
+    setIsDownloadMode(false);
   };
 
   return (
@@ -300,92 +305,188 @@ function Visualizer() {
           </svg>
         </button>
 
-        {/* --- NEW CARD LAYOUT --- */}
-        {/* Top Songs */}
-        <div style={{ marginBottom: '1.2rem' }}>
-          <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff', marginBottom: '0.5rem', textAlign: 'center', letterSpacing: '0.01em' }}>
-            Top Songs
-          </div>
-          <div>
-            {topSongs.map((s, i) => (
-              <div key={s} style={{
-                fontSize: '1.08rem',
-                fontWeight: 500,
-                color: '#fff',
-                marginBottom: '0.25em',
-                textAlign: 'center',
-                letterSpacing: '0.01em'
-              }}>
-                {i + 1}. {s}
+        {/*
+          We'll use a variable to determine if we're rendering for download or for display.
+          For display: classic vertical, center-aligned sections.
+          For download: keep the new compact layout.
+        */}
+
+        {isDownloadMode ? (
+          // --- Download Card Layout (compact, horizontal rows) ---
+          <>
+            {/* User's Spotify Highlights */}
+            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff', marginBottom: '1.1rem', textAlign: 'center', letterSpacing: '0.01em' }}>
+              {userName}&apos;s Spotify Highlights
+            </div>
+            {/* Top Songs */}
+            <div style={{ marginBottom: '1.2rem' }}>
+              <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fff', marginBottom: '0.5rem', textAlign: 'center', letterSpacing: '0.01em' }}>
+                Top Songs
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Genres and Artist Row */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          gap: '2.5rem',
-          marginBottom: '1.2rem',
-          flexWrap: 'wrap'
-        }}>
-          {/* Top Genres */}
-          <div>
-            <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
-              Top Genres
+              <div>
+                {topSongs.map((s, i) => (
+                  <div key={s} style={{
+                    fontSize: '1.08rem',
+                    fontWeight: 500,
+                    color: '#fff',
+                    marginBottom: '0.25em',
+                    textAlign: 'center',
+                    letterSpacing: '0.01em'
+                  }}>
+                    {i + 1}. {s}
+                  </div>
+                ))}
+              </div>
             </div>
-            {topGenres.map((g, i) => (
-              <div
-                key={g}
-                style={{
-                  color: getGenreColor(g),
-                  marginBottom: '0.18em',
-                  fontWeight: 500,
-                  fontSize: '1.05rem',
-                  textAlign: 'center'
-                }}>{g}</div>
-            ))}
-          </div>
-          {/* Top Artist */}
-          <div>
-            <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
-              Top Artist
+            {/* Genres and Artist Row */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              gap: '2.5rem',
+              marginBottom: '1.2rem',
+              flexWrap: 'wrap'
+            }}>
+              {/* Top Genres */}
+              <div>
+                <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
+                  Top Genres
+                </div>
+                {topGenres.map((g, i) => (
+                  <div
+                    key={g}
+                    style={{
+                      color: getGenreColor(g),
+                      marginBottom: '0.18em',
+                      fontWeight: 500,
+                      fontSize: '1.05rem',
+                      textAlign: 'center'
+                    }}>{g}</div>
+                ))}
+              </div>
+              {/* Top Artist */}
+              <div>
+                <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
+                  Top Artist
+                </div>
+                <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center' }}>
+                  {topArtist}
+                </div>
+              </div>
             </div>
-            <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center' }}>
-              {topArtist}
+            {/* Obscurity and Popularity Row */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              gap: '2.5rem',
+              marginTop: '1.2rem',
+              flexWrap: 'wrap'
+            }}>
+              {/* Obscurity Score */}
+              <div style={{ flex: 1, minWidth: 120 }}>
+                {obscurity !== null && (
+                  <>
+                    <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 600, marginBottom: 2, textAlign: 'left' }}>
+                      Obscurity Rating: {obscurity}%
+                    </div>
+                    <div style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', fontStyle: 'italic', textAlign: 'left' }}>
+                      *higher = more obscure taste
+                    </div>
+                  </>
+                )}
+              </div>
+              {/* Most/Least Popular Songs */}
+              <div style={{ flex: 2, minWidth: 220 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, textAlign: 'right' }}>
+                  {mostPopular && (
+                    <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600 }}>
+                      Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
+                      <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
+                        (popularity {mostPopular.popularity})
+                      </span>
+                    </div>
+                  )}
+                  {leastPopular && (
+                    <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600 }}>
+                      Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
+                      <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
+                        (popularity {leastPopular.popularity})
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-
-        {/* Obscurity and Popularity Row */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          gap: '2.5rem',
-          marginTop: '1.2rem',
-          flexWrap: 'wrap'
-        }}>
-          {/* Obscurity Score */}
-          <div style={{ flex: 1, minWidth: 120 }}>
+          </>
+        ) : (
+          // --- Site Display Card Layout (classic, vertical, center-aligned) ---
+          <>
+            {/* User's Spotify Highlights */}
+            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff', marginBottom: '1.1rem', textAlign: 'center', letterSpacing: '0.01em' }}>
+              {userName}&apos;s Spotify Highlights
+            </div>
+            {/* Top Songs */}
+            <div style={{ marginBottom: '1.2rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fff', marginBottom: '0.5rem', letterSpacing: '0.01em' }}>
+                Top Songs
+              </div>
+              <div>
+                {topSongs.map((s, i) => (
+                  <div key={s} style={{
+                    fontSize: '1.08rem',
+                    fontWeight: 500,
+                    color: '#fff',
+                    marginBottom: '0.25em',
+                    letterSpacing: '0.01em',
+                    textAlign: 'center'
+                  }}>
+                    {i + 1}. {s}
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Top Genres */}
+            <div style={{ marginBottom: '1.2rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem' }}>
+                Top Genres
+              </div>
+              {topGenres.map((g, i) => (
+                <div
+                  key={g}
+                  style={{
+                    color: getGenreColor(g),
+                    marginBottom: '0.18em',
+                    fontWeight: 500,
+                    fontSize: '1.05rem',
+                    textAlign: 'center'
+                  }}>{g}</div>
+              ))}
+            </div>
+            {/* Top Artist */}
+            <div style={{ marginBottom: '1.2rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem' }}>
+                Top Artist
+              </div>
+              <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center' }}>
+                {topArtist}
+              </div>
+            </div>
+            {/* Obscurity Score */}
             {obscurity !== null && (
-              <>
-                <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 600, marginBottom: 2, textAlign: 'left' }}>
+              <div style={{ marginBottom: '1.2rem', textAlign: 'center' }}>
+                <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 600, marginBottom: 2 }}>
                   Obscurity Rating: {obscurity}%
                 </div>
-                <div style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', fontStyle: 'italic', textAlign: 'left' }}>
+                <div style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', fontStyle: 'italic' }}>
                   *higher = more obscure taste
                 </div>
-              </>
+              </div>
             )}
-          </div>
-          {/* Most/Least Popular Songs */}
-          <div style={{ flex: 2, minWidth: 220 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, textAlign: 'right' }}>
+            {/* Most/Least Popular Songs */}
+            <div style={{ marginBottom: '1.2rem', textAlign: 'center' }}>
               {mostPopular && (
                 <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600 }}>
                   Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
@@ -403,8 +504,8 @@ function Visualizer() {
                 </div>
               )}
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
       {/* Spacer for tall mode to add 10vw at the bottom if scrolling is enabled */}
       {!isWide && <div style={{ height: '10vw', width: '100%' }} />}
