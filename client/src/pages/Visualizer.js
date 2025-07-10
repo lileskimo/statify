@@ -272,7 +272,7 @@ function Visualizer() {
           padding: '2.2rem 2.5rem',
           borderRadius: '22px',
           background: isDownloadMode
-            ? 'linear-gradient(135deg, #23242a 60%, #222b2b 100%)'
+            ? 'linear-gradient(135deg, #2b3a4b 0%, #23242a 55%, #1db954 100%)'
             : 'linear-gradient(135deg, rgba(40,40,48,0.96) 60%, rgba(30,60,60,0.98) 100%)',
           border: isDownloadMode
             ? '2px solid #23242a'
@@ -384,48 +384,43 @@ function Visualizer() {
                 </div>
               </div>
             </div>
-            {/* Most/Least Popular Row */}
+            {/* Obscurity Score (separate line) */}
+            {obscurity !== null && (
+              <div style={{ marginBottom: '0.8rem', textAlign: 'center' }}>
+                <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 600, marginBottom: 2 }}>
+                  Obscurity Rating: {obscurity}%
+                </div>
+                <div style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', fontStyle: 'italic' }}>
+                  *higher = more obscure taste
+                </div>
+              </div>
+            )}
+            {/* Most/Least Popular Songs Row (side by side, below obscurity) */}
             <div style={{
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'flex-start',
               gap: '2.5rem',
-              marginTop: '1.2rem',
+              marginTop: '0.2rem',
               flexWrap: 'wrap'
             }}>
-              {/* Obscurity Score */}
-              <div style={{ flex: 1, minWidth: 120 }}>
-                {obscurity !== null && (
-                  <>
-                    <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 600, marginBottom: 2, textAlign: 'left' }}>
-                      Obscurity Rating: {obscurity}%
-                    </div>
-                    <div style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', fontStyle: 'italic', textAlign: 'left' }}>
-                      *higher = more obscure taste
-                    </div>
-                  </>
-                )}
-              </div>
-              {/* Most/Least Popular Songs (side by side) */}
-              <div style={{ flex: 2, minWidth: 220, display: 'flex', flexDirection: 'row', gap: '2rem', justifyContent: 'flex-end' }}>
-                {mostPopular && (
-                  <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600, textAlign: 'right' }}>
-                    Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
-                    <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
-                      (popularity {mostPopular.popularity})
-                    </span>
-                  </div>
-                )}
-                {leastPopular && (
-                  <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600, textAlign: 'right' }}>
-                    Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
-                    <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
-                      (popularity {leastPopular.popularity})
-                    </span>
-                  </div>
-                )}
-              </div>
+              {mostPopular && (
+                <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600, textAlign: 'right' }}>
+                  Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
+                  <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
+                    (popularity {mostPopular.popularity})
+                  </span>
+                </div>
+              )}
+              {leastPopular && (
+                <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600, textAlign: 'right' }}>
+                  Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
+                  <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
+                    (popularity {leastPopular.popularity})
+                  </span>
+                </div>
+              )}
             </div>
           </>
         ) : (
