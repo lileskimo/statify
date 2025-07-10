@@ -201,20 +201,24 @@ function Visualizer() {
           width: '80%',
           alignSelf: 'center',
           marginTop: isWide ? 0 : betweenSpace,
-          marginBottom: isWide ? 0 : '2vw', // Add gap below card in tall mode
+          marginBottom: isWide ? 0 : '2vw',
           padding: '2.2rem 2.5rem',
           borderRadius: '22px',
-          background: `radial-gradient(circle at center, rgba(0,0,0,0.95) 0%, ${cardColor} 100%)`,
-          boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
+          background: 'rgba(28,28,30,0.55)', // glassmorphism: semi-transparent dark
+          boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
           textAlign: 'center',
           fontWeight: '600',
           fontSize: '1.25rem',
           userSelect: 'text',
-          opacity: '0.95',
+          opacity: '0.98',
           overflowWrap: 'break-word',
           wordBreak: 'break-word',
           whiteSpace: 'normal',
-          aspectRatio: '5 / 8', // Enforce the 5:8 ratio if supported
+          aspectRatio: '5 / 8',
+          backdropFilter: 'blur(18px) saturate(160%)', // glassmorphism effect
+          WebkitBackdropFilter: 'blur(18px) saturate(160%)', // Safari support
+          border: '1.5px solid rgba(255,255,255,0.13)', // subtle border
+          color: '#fff', // ensure text is visible
         }}
       >
         <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.7rem', color: 'white', opacity: 1 }}>
@@ -265,7 +269,7 @@ function Visualizer() {
           </div>
         )}
         {obscurity !== null && (
-          <div style={{ fontSize: '1.1rem', color: '#1DB954', fontWeight: 600, marginTop: '1.2rem' }}>
+          <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 600, marginTop: '1.2rem' }}>
             Obscurity Rating: {obscurity}%
             <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginLeft: 8 }}>
               (higher = more obscure taste)
