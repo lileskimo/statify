@@ -270,11 +270,15 @@ function Visualizer() {
           borderRadius: '22px',
           background: isDownloadMode
             ? 'linear-gradient(135deg, #23242a 60%, #222b2b 100%)'
-            : 'linear-gradient(135deg, rgba(40,40,48,0.92) 60%, rgba(60,255,180,0.10) 100%)', // glossy glassmorphism
-          boxShadow: '0 8px 32px 0 rgba(0,0,0,0.28), 0 1.5px 8px 0 rgba(30,255,180,0.08)', // extra glow
-          backdropFilter: 'blur(38px) saturate(220%)', // stronger blur and saturation
-          WebkitBackdropFilter: 'blur(38px) saturate(220%)',
-          border: '1.5px solid rgba(255,255,255,0.18)',
+            : 'linear-gradient(135deg, rgba(40,40,48,0.96) 60%, rgba(30,60,60,0.98) 100%)',
+          border: isDownloadMode
+            ? '2px solid #23242a'
+            : '1.5px solid rgba(255,255,255,0.18)',
+          boxShadow: '0 8px 32px 0 rgba(0,0,0,0.28), 0 1.5px 8px 0 rgba(30,255,180,0.08)',
+          ...(isDownloadMode
+            ? { backdropFilter: 'none', WebkitBackdropFilter: 'none' }
+            : { backdropFilter: 'blur(38px) saturate(220%)', WebkitBackdropFilter: 'blur(38px) saturate(220%)' }
+          ),
           color: '#fff',
           position: 'relative'
         }}
