@@ -1,8 +1,9 @@
 import OrbitVisualizer from '../components/OrbitVisualizer'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import axios from 'axios'
 import { colorPalette, getGenreColor } from '../utils/genreColors'
 import { useNavigate } from 'react-router-dom'
+import html2canvas from 'html2canvas'
 
 
 function ListenScoreInfo() {
@@ -39,6 +40,7 @@ function Visualizer() {
   const [obscurity, setObscurity] = useState(null)
   const [mostPopular, setMostPopular] = useState(null)
   const [leastPopular, setLeastPopular] = useState(null)
+  const cardRef = useRef(null);
   const isWide = windowSize.width >= windowSize.height
 
   const cardHue = useMemo(() => Math.floor(Math.random() * 360), [])
@@ -128,6 +130,35 @@ function Visualizer() {
   const sharedMinWidth = isWide ? '340px' : '100px';
   const cardMinWidth = isWide ? '240px' : '100px'
 
+  // Download handler
+  const handleDownloadCard = async () => {
+    if (!cardRef.current) return;
+    // Temporarily add footer for download
+    const footer = document.createElement('div');
+    footer.innerText = 'Generated with statifyforspotify.vercel.app';
+    footer.style.cssText = `
+      width: 100%;
+      text-align: center;
+      color: #b3b3b3;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 2.2rem;
+      padding-bottom: 0.5rem;
+      font-family: inherit;
+    `;
+    cardRef.current.appendChild(footer);
+
+    // Wait for DOM update
+    await new Promise(r => setTimeout(r, 10));
+    const canvas = await html2canvas(cardRef.current, { backgroundColor: null, useCORS: true });
+    cardRef.current.removeChild(footer);
+
+    const link = document.createElement('a');
+    link.download = 'statify-card.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+
   return (
     <div
       style={{
@@ -140,8 +171,8 @@ function Visualizer() {
         boxSizing: 'border-box',
         paddingLeft: sideSpace,
         paddingRight: sideSpace,
-        paddingTop: isWide ? 16 : 0, // small top padding for wide
-        paddingBottom: isWide ? 16 : 0, // small bottom padding for wide
+        paddingTop: isWide ? 16 : 0,
+        paddingBottom: isWide ? 16 : 0,
         gap: betweenSpace,
         background: 'transparent',
         overflowY: 'auto',
@@ -155,7 +186,7 @@ function Visualizer() {
           minWidth: sharedMinWidth,
           width: '100%',
           height: isWide ? '80vh' : 'clamp(340px, 50vh, 800px)',
-          paddingBottom : isWide ? '0' : '5vh',
+          paddingBottom : isWide ? '0' : '10vh',
           maxHeight: '1000px',
           display: 'flex',
           flexDirection: 'column',
@@ -194,6 +225,7 @@ function Visualizer() {
       </div>
       {/* Card */}
       <div
+        ref={cardRef}
         style={{
           flex: isWide ? '1 1 0' : 'unset',
           maxWidth: cardMaxWidth,
@@ -214,30 +246,58 @@ function Visualizer() {
           overflowWrap: 'break-word',
           wordBreak: 'break-word',
           whiteSpace: 'normal',
-          aspectRatio: '5 / 8',
-          backdropFilter: 'blur(18px) saturate(160%)', // glassmorphism effect
-          WebkitBackdropFilter: 'blur(18px) saturate(160%)', // Safari support
+          // Remove aspectRatio, let height fit content
+          backdropFilter: 'blur(32px) saturate(180%)', // more blur, stronger glass effect
+          WebkitBackdropFilter: 'blur(32px) saturate(180%)', // Safari support
           border: '1.5px solid rgba(255,255,255,0.13)', // subtle border
           color: '#fff', // ensure text is visible
+          position: 'relative'
         }}
       >
+        {/* Download button */}
+        <button
+          onClick={handleDownloadCard}
+          title="Download card as image"
+          style={{
+            position: 'absolute',
+            top: 14,
+            right: 18,
+            background: 'rgba(24,24,24,0.85)',
+            border: 'none',
+            borderRadius: '50%',
+            width: 36,
+            height: 36,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
+            zIndex: 2,
+            transition: 'background 0.2s',
+          }}
+        >
+          {/* Download SVG icon */}
+          <svg width="20" height="20" fill="none" stroke="#1DB954" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+            <path d="M12 5v14M19 12l-7 7-7-7"/>
+          </svg>
+        </button>
         <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.7rem', color: 'white', opacity: 1 }}>
           {userName}&apos;s Spotify Highlights
         </div>
         <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem' }}>
           Top Genres
         </div>
-          {topGenres.map((g, i) => (
-            <div
-              key={g}
-              style={{
-                listStyle: 'none',
-                color: getGenreColor(g),
-                marginBottom: '0.2em',
-                fontWeight: 500,
-                fontSize: '1.1rem'
-              }}>{g}</div>
-          ))}
+        {topGenres.map((g, i) => (
+          <div
+            key={g}
+            style={{
+              listStyle: 'none',
+              color: getGenreColor(g),
+              marginBottom: '0.2em',
+              fontWeight: 500,
+              fontSize: '1.1rem'
+            }}>{g}</div>
+        ))}
         <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem', marginTop: '1.2rem' }}>
           Top Songs
         </div>
@@ -269,13 +329,15 @@ function Visualizer() {
           </div>
         )}
         {obscurity !== null && (
-          <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 600, marginTop: '1.2rem' }}>
-            Obscurity Rating: {obscurity}%
-            <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginLeft: 8 }}>
-              (higher = more obscure taste)
-    </span>
-  </div>
-)}
+          <>
+            <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 600, marginTop: '1.2rem' }}>
+              Obscurity Rating: {obscurity}%
+            </div>
+            <div style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginTop: 2, fontStyle: 'italic' }}>
+              *higher = more obscure taste
+            </div>
+          </>
+        )}
       </div>
       {/* Spacer for tall mode to add 10vw at the bottom if scrolling is enabled */}
       {!isWide && <div style={{ height: '10vw', width: '100%' }} />}
