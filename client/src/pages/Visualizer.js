@@ -9,26 +9,20 @@ function ListenScoreInfo() {
   return (
     <div
       style={{
-        background: 'rgba(28,28,30,0.97)',
-        color: '#fff',
-        borderRadius: 14,
-        padding: '1.2rem 1.5rem',
-        margin: '2rem auto 0 auto',
+        color: '#b3b3b3',
+        fontSize: '0.98rem',
+        margin: '18px 0 0 0',
+        textAlign: 'center',
+        fontWeight: 400,
+        lineHeight: 1.5,
         maxWidth: 600,
-        fontSize: '1.08rem',
-        lineHeight: 1.7,
-        boxShadow: '0 4px 18px rgba(0,0,0,0.18)',
-        textAlign: 'center'
+        width: '100%',
+        alignSelf: 'center',
+        pointerEvents: 'none',
+        userSelect: 'text'
       }}
     >
-      <span style={{ color: '#1DB954', fontWeight: 600 }}>
-        Formula:&nbsp;
-        <code>
-          Score = 0.3 × (100 - short-term rank) + 0.35 × (100 - medium-term rank) + 0.35 × (100 - long-term rank)
-        </code>
-      </span>
-      <br />
-      Higher scores mean the song is more consistently among your favorites in any time frame.
+      Score = 0.3 × (100 - short-term rank) + 0.35 × (100 - medium-term rank) + 0.35 × (100 - long-term rank)
     </div>
   );
 }
@@ -182,8 +176,7 @@ function Visualizer() {
         }}>
           <OrbitVisualizer tracks={tracks} genres={genres} isWide={isWide} />
         </div>
-        {/* Show ListenScoreInfo here for tall mode */}
-        {!isWide && <ListenScoreInfo />}
+        <ListenScoreInfo />
       </div>
       {/* Card */}
       <div
@@ -249,8 +242,6 @@ function Visualizer() {
   </div>
 )}
       </div>
-      {/* Show ListenScoreInfo here for wide mode */}
-      {isWide && <ListenScoreInfo />}
       {/* Spacer for tall mode to add 10vw at the bottom if scrolling is enabled */}
       {!isWide && <div style={{ height: '10vw', width: '100%' }} />}
     </div>
