@@ -310,9 +310,9 @@ function Visualizer() {
           }}
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1DB954" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 5v10" />
-            <polyline points="6 15 12 21 18 15" />
-            <line x1="6" y1="23" x2="18" y2="23" />
+            <path d="M12 5v9" />
+            <polyline points="8 13 12 17 16 13" />
+            <path d="M5 19a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2" />
           </svg>
         </button>
 
