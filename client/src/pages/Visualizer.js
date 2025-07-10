@@ -268,7 +268,9 @@ function Visualizer() {
           marginBottom: isWide ? 0 : '2vw',
           padding: '2.2rem 2.5rem',
           borderRadius: '22px',
-          background: 'linear-gradient(135deg, rgba(40,40,48,0.92) 60%, rgba(60,255,180,0.10) 100%)', // glossy glassmorphism
+          background: isDownloadMode
+            ? 'linear-gradient(135deg, #23242a 60%, #222b2b 100%)'
+            : 'linear-gradient(135deg, rgba(40,40,48,0.92) 60%, rgba(60,255,180,0.10) 100%)', // glossy glassmorphism
           boxShadow: '0 8px 32px 0 rgba(0,0,0,0.28), 0 1.5px 8px 0 rgba(30,255,180,0.08)', // extra glow
           backdropFilter: 'blur(38px) saturate(220%)', // stronger blur and saturation
           WebkitBackdropFilter: 'blur(38px) saturate(220%)',
@@ -312,7 +314,7 @@ function Visualizer() {
         */}
 
         {isDownloadMode ? (
-          // --- Download Card Layout (compact, horizontal rows) ---
+          // --- Download Card Layout (compact, horizontal rows & opaque bg) ---
           <>
             {/* User's Spotify Highlights */}
             <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff', marginBottom: '1.1rem', textAlign: 'center', letterSpacing: '0.01em' }}>
@@ -338,7 +340,7 @@ function Visualizer() {
                 ))}
               </div>
             </div>
-            {/* Genres and Artist Row */}
+            {/* Top Genres & Top Artist Row */}
             <div style={{
               display: 'flex',
               flexDirection: 'row',
@@ -375,11 +377,11 @@ function Visualizer() {
                 </div>
               </div>
             </div>
-            {/* Obscurity and Popularity Row */}
+            {/* Most/Least Popular Row */}
             <div style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'center',
               alignItems: 'flex-start',
               gap: '2.5rem',
               marginTop: '1.2rem',
@@ -398,26 +400,24 @@ function Visualizer() {
                   </>
                 )}
               </div>
-              {/* Most/Least Popular Songs */}
-              <div style={{ flex: 2, minWidth: 220 }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, textAlign: 'right' }}>
-                  {mostPopular && (
-                    <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600 }}>
-                      Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
-                      <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
-                        (popularity {mostPopular.popularity})
-                      </span>
-                    </div>
-                  )}
-                  {leastPopular && (
-                    <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600 }}>
-                      Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
-                      <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
-                        (popularity {leastPopular.popularity})
-                      </span>
-                    </div>
-                  )}
-                </div>
+              {/* Most/Least Popular Songs (side by side) */}
+              <div style={{ flex: 2, minWidth: 220, display: 'flex', flexDirection: 'row', gap: '2rem', justifyContent: 'flex-end' }}>
+                {mostPopular && (
+                  <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600, textAlign: 'right' }}>
+                    Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
+                    <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
+                      (popularity {mostPopular.popularity})
+                    </span>
+                  </div>
+                )}
+                {leastPopular && (
+                  <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600, textAlign: 'right' }}>
+                    Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
+                    <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
+                      (popularity {leastPopular.popularity})
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </>
