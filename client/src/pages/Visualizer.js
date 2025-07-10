@@ -4,6 +4,35 @@ import axios from 'axios'
 import { colorPalette, getGenreColor } from '../utils/genreColors'
 import { useNavigate } from 'react-router-dom'
 
+
+function ListenScoreInfo() {
+  return (
+    <div
+      style={{
+        background: 'rgba(28,28,30,0.97)',
+        color: '#fff',
+        borderRadius: 14,
+        padding: '1.2rem 1.5rem',
+        margin: '2rem auto 0 auto',
+        maxWidth: 600,
+        fontSize: '1.08rem',
+        lineHeight: 1.7,
+        boxShadow: '0 4px 18px rgba(0,0,0,0.18)',
+        textAlign: 'center'
+      }}
+    >
+      <span style={{ color: '#1DB954', fontWeight: 600 }}>
+        Formula:&nbsp;
+        <code>
+          Score = 0.3 × (100 - short-term rank) + 0.35 × (100 - medium-term rank) + 0.35 × (100 - long-term rank)
+        </code>
+      </span>
+      <br />
+      Higher scores mean the song is more consistently among your favorites in any time frame.
+    </div>
+  );
+}
+
 function Visualizer() {
   const navigate = useNavigate()
   const [tracks, setTracks] = useState([])
@@ -13,6 +42,7 @@ function Visualizer() {
   const [topArtist, setTopArtist] = useState('')
   const [userName, setUserName] = useState('Your')
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight })
+  const [obscurity, setObscurity] = useState(null)
   const isWide = windowSize.width >= windowSize.height
 
   const cardHue = useMemo(() => Math.floor(Math.random() * 360), [])
@@ -44,8 +74,10 @@ function Visualizer() {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
-        const finalTracks = res.data
+        // If you return { tracks, obscurityRating }
+        const { tracks: finalTracks, obscurityRating } = res.data
         setTracks(finalTracks)
+        setObscurity(obscurityRating)
 
         // Top genres (sorted by count)
         const genreCounts = {}
@@ -150,8 +182,10 @@ function Visualizer() {
         }}>
           <OrbitVisualizer tracks={tracks} genres={genres} isWide={isWide} />
         </div>
+        {/* Show ListenScoreInfo here for tall mode */}
+        {!isWide && <ListenScoreInfo />}
       </div>
-      {/* Shareable Card on the right */}
+      {/* Card */}
       <div
         style={{
           flex: isWide ? '1 1 0' : 'unset',
@@ -206,7 +240,17 @@ function Visualizer() {
         <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 500 }}>
           {topArtist}
         </div>
+        {obscurity !== null && (
+  <div style={{ fontSize: '1.1rem', color: '#1DB954', fontWeight: 600, marginTop: '1.2rem' }}>
+    Obscurity Rating: {obscurity}%
+    <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginLeft: 8 }}>
+      (higher = more obscure taste)
+    </span>
+  </div>
+)}
       </div>
+      {/* Show ListenScoreInfo here for wide mode */}
+      {isWide && <ListenScoreInfo />}
       {/* Spacer for tall mode to add 10vw at the bottom if scrolling is enabled */}
       {!isWide && <div style={{ height: '10vw', width: '100%' }} />}
     </div>

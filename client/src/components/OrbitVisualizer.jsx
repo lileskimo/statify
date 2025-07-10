@@ -265,7 +265,6 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedTrack(track);
-                // Optionally, scroll to the tooltip or focus
               }}
             >
               <meshStandardMaterial transparent opacity={0} />

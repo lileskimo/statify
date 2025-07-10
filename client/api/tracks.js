@@ -23,6 +23,8 @@ export default async function handler(req, res) {
     // Build track map and artist set
     const trackMap = {}
     const artistSet = new Set()
+    let popularitySum = 0
+    let popularityCount = 0
 
     const processTracks = (tracks, rankKey) => {
       tracks.forEach((track, index) => {
@@ -34,11 +36,15 @@ export default async function handler(req, res) {
             external_urls: track.external_urls,
             artist_id: track.artists[0].id,
             albumImage: (track.album.images && track.album.images[1]?.url) || (track.album.images && track.album.images[0]?.url) || '',
+            popularity: track.popularity,
             short_rank: 75,
             medium_rank: 75,
             long_rank: 75
           }
           artistSet.add(track.artists[0].id)
+          // Only count unique tracks for popularity
+          popularitySum += track.popularity
+          popularityCount += 1
         }
         trackMap[track.id][rankKey] = index + 1
       })
@@ -76,14 +82,19 @@ export default async function handler(req, res) {
         external_urls: track.external_urls,
         listenScore,
         genre: artistGenreMap[track.artist_id] || 'unknown',
-        albumImage: track.albumImage
+        albumImage: track.albumImage,
+        popularity: track.popularity
       }
     })
 
     // Sort by listenScore descending
     finalTracks.sort((a, b) => b.listenScore - a.listenScore)
 
-    res.json(finalTracks)
+    // Calculate obscurity rating
+    const avgPopularity = popularityCount > 0 ? popularitySum / popularityCount : 0
+    const obscurityRating = Math.round(100 - avgPopularity)
+
+    res.json({ tracks: finalTracks, obscurityRating })
   } catch (err) {
     console.error(err)
     res.status(400).send('Failed to fetch tracks')
