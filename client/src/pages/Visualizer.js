@@ -295,68 +295,116 @@ function Visualizer() {
             transition: 'background 0.2s',
           }}
         >
-          {/* Download SVG icon */}
           <svg width="20" height="20" fill="none" stroke="#1DB954" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
             <path d="M12 5v14M19 12l-7 7-7-7"/>
           </svg>
         </button>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.7rem', color: 'white', opacity: 1 }}>
-          {userName}&apos;s Spotify Highlights
-        </div>
-        <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem' }}>
-          Top Genres
-        </div>
-        {topGenres.map((g, i) => (
-          <div
-            key={g}
-            style={{
-              listStyle: 'none',
-              color: getGenreColor(g),
-              marginBottom: '0.2em',
-              fontWeight: 500,
-              fontSize: '1.1rem'
-            }}>{g}</div>
-        ))}
-        <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem', marginTop: '1.2rem' }}>
-          Top Songs
-        </div>
-        <div style={{ fontSize: '1.1rem' ,color: 'white', fontWeight: 500, marginBottom: '1.2rem' }}>
-          {topSongs.map((s, i) => (
-            <div key={s}>{s}</div>
-          ))}
-        </div>
-        <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'white', marginBottom: '0.5rem' }}>
-          Top Artist
-        </div>
-        <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 500 }}>
-          {topArtist}
-        </div>
-        {mostPopular && (
-          <div style={{ fontSize: '1.1rem', color: '#FFD700', fontWeight: 600, marginTop: '1.2rem' }}>
-            Most Popular Song: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
-            <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginLeft: 8 }}>
-              (popularity {mostPopular.popularity})
-            </span>
+
+        {/* --- NEW CARD LAYOUT --- */}
+        {/* Top Songs */}
+        <div style={{ marginBottom: '1.2rem' }}>
+          <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff', marginBottom: '0.5rem', textAlign: 'center', letterSpacing: '0.01em' }}>
+            Top Songs
           </div>
-        )}
-        {leastPopular && (
-          <div style={{ fontSize: '1.1rem', color: '#FF6F61', fontWeight: 600, marginTop: '0.7rem' }}>
-            Least Popular Song: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
-            <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginLeft: 8 }}>
-              (popularity {leastPopular.popularity})
-            </span>
+          <div>
+            {topSongs.map((s, i) => (
+              <div key={s} style={{
+                fontSize: '1.08rem',
+                fontWeight: 500,
+                color: '#fff',
+                marginBottom: '0.25em',
+                textAlign: 'center',
+                letterSpacing: '0.01em'
+              }}>
+                {i + 1}. {s}
+              </div>
+            ))}
           </div>
-        )}
-        {obscurity !== null && (
-          <>
-            <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 600, marginTop: '1.2rem' }}>
-              Obscurity Rating: {obscurity}%
+        </div>
+
+        {/* Genres and Artist Row */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          gap: '2.5rem',
+          marginBottom: '1.2rem',
+          flexWrap: 'wrap'
+        }}>
+          {/* Top Genres */}
+          <div>
+            <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
+              Top Genres
             </div>
-            <div style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginTop: 2, fontStyle: 'italic' }}>
-              *higher = more obscure taste
+            {topGenres.map((g, i) => (
+              <div
+                key={g}
+                style={{
+                  color: getGenreColor(g),
+                  marginBottom: '0.18em',
+                  fontWeight: 500,
+                  fontSize: '1.05rem',
+                  textAlign: 'center'
+                }}>{g}</div>
+            ))}
+          </div>
+          {/* Top Artist */}
+          <div>
+            <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
+              Top Artist
             </div>
-          </>
-        )}
+            <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center' }}>
+              {topArtist}
+            </div>
+          </div>
+        </div>
+
+        {/* Obscurity and Popularity Row */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          gap: '2.5rem',
+          marginTop: '1.2rem',
+          flexWrap: 'wrap'
+        }}>
+          {/* Obscurity Score */}
+          <div style={{ flex: 1, minWidth: 120 }}>
+            {obscurity !== null && (
+              <>
+                <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 600, marginBottom: 2, textAlign: 'left' }}>
+                  Obscurity Rating: {obscurity}%
+                </div>
+                <div style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', fontStyle: 'italic', textAlign: 'left' }}>
+                  *higher = more obscure taste
+                </div>
+              </>
+            )}
+          </div>
+          {/* Most/Least Popular Songs */}
+          <div style={{ flex: 2, minWidth: 220 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, textAlign: 'right' }}>
+              {mostPopular && (
+                <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600 }}>
+                  Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
+                  <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
+                    (popularity {mostPopular.popularity})
+                  </span>
+                </div>
+              )}
+              {leastPopular && (
+                <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600 }}>
+                  Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
+                  <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
+                    (popularity {leastPopular.popularity})
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
       {/* Spacer for tall mode to add 10vw at the bottom if scrolling is enabled */}
       {!isWide && <div style={{ height: '10vw', width: '100%' }} />}
