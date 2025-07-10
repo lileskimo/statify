@@ -134,11 +134,20 @@ function Visualizer() {
   const handleDownloadCard = async () => {
     if (!cardRef.current) return;
 
-    // Hide the download button before capture
-    const downloadBtn = cardRef.current.querySelector('.statify-download-btn');
-    if (downloadBtn) downloadBtn.style.display = 'none';
+    // Clone the card for download
+    const cardClone = cardRef.current.cloneNode(true);
+    cardClone.style.width = '480px';
+    cardClone.style.maxWidth = '480px';
+    cardClone.style.minWidth = '480px';
+    cardClone.style.boxSizing = 'border-box';
+    cardClone.style.position = 'static';
+    cardClone.style.margin = '0 auto';
 
-    // Temporarily add footer for download
+    // Remove the download button from the clone if present
+    const btnClone = cardClone.querySelector('.statify-download-btn');
+    if (btnClone) btnClone.remove();
+
+    // Add the footer to the clone only
     const footer = document.createElement('div');
     footer.innerText = 'Generated with statifyforspotify.vercel.app';
     footer.style.cssText = `
@@ -151,23 +160,7 @@ function Visualizer() {
       padding-bottom: 0.5rem;
       font-family: inherit;
     `;
-    cardRef.current.appendChild(footer);
-
-    // Create a container to render the card at a fixed width for download
-    const cardClone = cardRef.current.cloneNode(true);
-    cardClone.style.width = '480px';
-    cardClone.style.maxWidth = '480px';
-    cardClone.style.minWidth = '480px';
-    cardClone.style.boxSizing = 'border-box';
-    cardClone.style.position = 'static';
-    cardClone.style.margin = '0 auto';
-    // Remove the download button from the clone if present
-    const btnClone = cardClone.querySelector('.statify-download-btn');
-    if (btnClone) btnClone.remove();
-
-    // Add the footer to the clone as well
-    const footerClone = footer.cloneNode(true);
-    cardClone.appendChild(footerClone);
+    cardClone.appendChild(footer);
 
     // Create a hidden container for rendering
     const hiddenDiv = document.createElement('div');
@@ -185,8 +178,6 @@ function Visualizer() {
 
     // Clean up
     document.body.removeChild(hiddenDiv);
-    cardRef.current.removeChild(footer);
-    if (downloadBtn) downloadBtn.style.display = '';
 
     // Download
     const link = document.createElement('a');
@@ -222,7 +213,7 @@ function Visualizer() {
           minWidth: sharedMinWidth,
           width: '100%',
           height: isWide ? '80vh' : 'clamp(340px, 50vh, 800px)',
-          paddingBottom : isWide ? '0' : '10vh',
+          paddingBottom : isWide ? '0' : '15vh',
           maxHeight: '1000px',
           display: 'flex',
           flexDirection: 'column',
@@ -272,19 +263,11 @@ function Visualizer() {
           marginBottom: isWide ? 0 : '2vw',
           padding: '2.2rem 2.5rem',
           borderRadius: '22px',
-          background: 'rgba(28,28,30,0.88)', // more opaque glassmorphism
-          boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
-          textAlign: 'center',
-          fontWeight: '600',
-          fontSize: '1.25rem',
-          userSelect: 'text',
-          opacity: '0.98',
-          overflowWrap: 'break-word',
-          wordBreak: 'break-word',
-          whiteSpace: 'normal',
-          backdropFilter: 'blur(32px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(32px) saturate(180%)',
-          border: '1.5px solid rgba(255,255,255,0.13)',
+          background: 'linear-gradient(135deg, rgba(40,40,48,0.92) 60%, rgba(60,255,180,0.10) 100%)', // glossy glassmorphism
+          boxShadow: '0 8px 32px 0 rgba(0,0,0,0.28), 0 1.5px 8px 0 rgba(30,255,180,0.08)', // extra glow
+          backdropFilter: 'blur(38px) saturate(220%)', // stronger blur and saturation
+          WebkitBackdropFilter: 'blur(38px) saturate(220%)',
+          border: '1.5px solid rgba(255,255,255,0.18)',
           color: '#fff',
           position: 'relative'
         }}
