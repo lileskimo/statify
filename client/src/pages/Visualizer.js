@@ -41,7 +41,6 @@ function Visualizer() {
   const [mostPopular, setMostPopular] = useState(null)
   const [leastPopular, setLeastPopular] = useState(null)
   const cardRef = useRef(null);
-  const isWide = windowSize.width >= windowSize.height
 
   const cardHue = useMemo(() => Math.floor(Math.random() * 360), [])
   const cardColor = useMemo(() => colorPalette[Math.floor(Math.random() * colorPalette.length)], [])
@@ -120,6 +119,7 @@ function Visualizer() {
   }, [])
 
   // Spacing variables
+  const isWide = windowSize.width >= windowSize.height
   const sideSpace = isWide ? `${Math.max(0.05 * windowSize.width, 16)}px` : '10px'
   const betweenSpace = isWide ? `${Math.max(0.06 * windowSize.width, 32)}px` : '40px'
   const orbitMaxWidth = isWide ? 'clamp(320px, 70vw, 1200px)' : 'clamp(200px, 98vw, 750px)';
@@ -133,6 +133,11 @@ function Visualizer() {
   // Download handler
   const handleDownloadCard = async () => {
     if (!cardRef.current) return;
+
+    // Hide the download button before capture
+    const downloadBtn = cardRef.current.querySelector('.statify-download-btn');
+    if (downloadBtn) downloadBtn.style.display = 'none';
+
     // Temporarily add footer for download
     const footer = document.createElement('div');
     footer.innerText = 'Generated with statifyforspotify.vercel.app';
@@ -148,11 +153,42 @@ function Visualizer() {
     `;
     cardRef.current.appendChild(footer);
 
+    // Create a container to render the card at a fixed width for download
+    const cardClone = cardRef.current.cloneNode(true);
+    cardClone.style.width = '480px';
+    cardClone.style.maxWidth = '480px';
+    cardClone.style.minWidth = '480px';
+    cardClone.style.boxSizing = 'border-box';
+    cardClone.style.position = 'static';
+    cardClone.style.margin = '0 auto';
+    // Remove the download button from the clone if present
+    const btnClone = cardClone.querySelector('.statify-download-btn');
+    if (btnClone) btnClone.remove();
+
+    // Add the footer to the clone as well
+    const footerClone = footer.cloneNode(true);
+    cardClone.appendChild(footerClone);
+
+    // Create a hidden container for rendering
+    const hiddenDiv = document.createElement('div');
+    hiddenDiv.style.position = 'fixed';
+    hiddenDiv.style.left = '-9999px';
+    hiddenDiv.style.top = '0';
+    hiddenDiv.style.width = '480px';
+    hiddenDiv.style.zIndex = '-1';
+    hiddenDiv.appendChild(cardClone);
+    document.body.appendChild(hiddenDiv);
+
     // Wait for DOM update
     await new Promise(r => setTimeout(r, 10));
-    const canvas = await html2canvas(cardRef.current, { backgroundColor: null, useCORS: true });
-    cardRef.current.removeChild(footer);
+    const canvas = await html2canvas(cardClone, { backgroundColor: null, useCORS: true, width: 480 });
 
+    // Clean up
+    document.body.removeChild(hiddenDiv);
+    cardRef.current.removeChild(footer);
+    if (downloadBtn) downloadBtn.style.display = '';
+
+    // Download
     const link = document.createElement('a');
     link.download = 'statify-card.png';
     link.href = canvas.toDataURL('image/png');
@@ -236,7 +272,7 @@ function Visualizer() {
           marginBottom: isWide ? 0 : '2vw',
           padding: '2.2rem 2.5rem',
           borderRadius: '22px',
-          background: 'rgba(28,28,30,0.55)', // glassmorphism: semi-transparent dark
+          background: 'rgba(28,28,30,0.88)', // more opaque glassmorphism
           boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
           textAlign: 'center',
           fontWeight: '600',
@@ -246,16 +282,16 @@ function Visualizer() {
           overflowWrap: 'break-word',
           wordBreak: 'break-word',
           whiteSpace: 'normal',
-          // Remove aspectRatio, let height fit content
-          backdropFilter: 'blur(32px) saturate(180%)', // more blur, stronger glass effect
-          WebkitBackdropFilter: 'blur(32px) saturate(180%)', // Safari support
-          border: '1.5px solid rgba(255,255,255,0.13)', // subtle border
-          color: '#fff', // ensure text is visible
+          backdropFilter: 'blur(32px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(32px) saturate(180%)',
+          border: '1.5px solid rgba(255,255,255,0.13)',
+          color: '#fff',
           position: 'relative'
         }}
       >
         {/* Download button */}
         <button
+          className="statify-download-btn"
           onClick={handleDownloadCard}
           title="Download card as image"
           style={{
