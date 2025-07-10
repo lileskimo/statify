@@ -272,7 +272,7 @@ function Visualizer() {
           padding: '2.2rem 2.5rem',
           borderRadius: isDownloadMode ? '0px' : '22px',
           background: isDownloadMode
-            ? 'linear-gradient(135deg,rgb(35, 161, 79) 0%, #23242a 55%,rgb(35, 161, 79) 100%)'
+            ? 'linear-gradient(135deg,rgb(22, 93, 47) 0%, #23242a 55%,rgb(22, 93, 47) 100%)'
             : 'linear-gradient(135deg, rgba(40,40,48,0.96) 60%, rgba(30,60,60,0.98) 100%)',
           border: isDownloadMode
             ? '2px solid #23242a'
@@ -352,7 +352,7 @@ function Visualizer() {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              alignItems: 'flex-start',
+              alignItems: 'center',
               gap: '2.5rem',
               marginBottom: '1.2rem',
               flexWrap: 'wrap',
@@ -377,7 +377,7 @@ function Visualizer() {
                 ))}
               </div>
               {/* Vertical Separator */}
-              <div style={{ width: 1, minWidth: 1, alignSelf: 'stretch', background: 'rgba(180,180,180,0.22)', margin: '0 1.2rem' }} />
+              <div style={{ width: 1, minWidth: 1, height: 60, alignSelf: 'center', background: 'rgba(180,180,180,0.22)', margin: '0 0.7rem' }} />
               {/* Top Artist */}
               <div style={{ minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
                 <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
@@ -404,7 +404,7 @@ function Visualizer() {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              alignItems: 'flex-start',
+              alignItems: 'center',
               gap: '2.5rem',
               marginTop: '0.2rem',
               flexWrap: 'wrap',
@@ -420,7 +420,7 @@ function Visualizer() {
               )}
               {/* Vertical Separator */}
               {mostPopular && leastPopular && (
-                <div style={{ width: 1, minWidth: 1, alignSelf: 'stretch', background: 'rgba(180,180,180,0.22)', margin: '0 1.2rem' }} />
+                <div style={{ width: 1, minWidth: 1, height: 60, alignSelf: 'center', background: 'rgba(180,180,180,0.22)', margin: '0 0.7rem' }} />
               )}
               {leastPopular && (
                 <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600, textAlign: 'right', minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
