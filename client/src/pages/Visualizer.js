@@ -137,6 +137,9 @@ function Visualizer() {
     if (!cardRef.current) return;
     setIsDownloadMode(true);
 
+    // Wait for the DOM to update to download mode
+    await new Promise(r => setTimeout(r, 50));
+
     // Clone the card for download
     const cardClone = cardRef.current.cloneNode(true);
     cardClone.style.width = '480px';
