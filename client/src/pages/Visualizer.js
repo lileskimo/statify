@@ -309,8 +309,10 @@ function Visualizer() {
             transition: 'background 0.2s',
           }}
         >
-          <svg width="20" height="20" fill="none" stroke="#1DB954" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-            <path d="M12 5v14M19 12l-7 7-7-7"/>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1DB954" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 5v10" />
+            <polyline points="6 15 12 21 18 15" />
+            <line x1="6" y1="19" x2="18" y2="19" />
           </svg>
         </button>
 
