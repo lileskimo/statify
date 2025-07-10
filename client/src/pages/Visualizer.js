@@ -270,7 +270,7 @@ function Visualizer() {
           marginTop: isWide ? 0 : betweenSpace,
           marginBottom: isWide ? 0 : '2vw',
           padding: '2.2rem 2.5rem',
-          borderRadius: '22px',
+          borderRadius: isDownloadMode ? '0px' : '22px',
           background: isDownloadMode
             ? 'linear-gradient(135deg,rgb(35, 161, 79) 0%, #23242a 55%,rgb(35, 161, 79) 100%)'
             : 'linear-gradient(135deg, rgba(40,40,48,0.96) 60%, rgba(30,60,60,0.98) 100%)',
