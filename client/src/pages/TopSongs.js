@@ -24,7 +24,7 @@ function TopSongs() {
 
     axios.get(`/api/tracks`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
-        setTracks(res.data)
+        setTracks(res.data.tracks) 
         setLoading(false)
       })
       .catch(() => {
