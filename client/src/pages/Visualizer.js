@@ -37,13 +37,15 @@ function Visualizer() {
   const [userName, setUserName] = useState('Your')
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight })
   const [obscurity, setObscurity] = useState(null)
+  const [mostPopular, setMostPopular] = useState(null)
+  const [leastPopular, setLeastPopular] = useState(null)
   const isWide = windowSize.width >= windowSize.height
 
   const cardHue = useMemo(() => Math.floor(Math.random() * 360), [])
   const cardColor = useMemo(() => colorPalette[Math.floor(Math.random() * colorPalette.length)], [])
 
-  const NAVBAR_HEIGHT = 64; // px
-  const FOOTER_HEIGHT = 48; // px (approximate, adjust if needed)
+  const NAVBAR_HEIGHT = 64;
+  const FOOTER_HEIGHT = 48;
   const availableHeight = `calc(100vh - ${NAVBAR_HEIGHT}px - ${FOOTER_HEIGHT}px)`;
 
   useEffect(() => {
@@ -72,6 +74,14 @@ function Visualizer() {
         const { tracks: finalTracks, obscurityRating } = res.data
         setTracks(finalTracks)
         setObscurity(obscurityRating)
+
+        // Find most and least popular among top tracks
+        if (finalTracks.length > 0) {
+          const most = finalTracks.reduce((a, b) => (a.popularity > b.popularity ? a : b))
+          const least = finalTracks.reduce((a, b) => (a.popularity < b.popularity ? a : b))
+          setMostPopular(most)
+          setLeastPopular(least)
+        }
 
         // Top genres (sorted by count)
         const genreCounts = {}
@@ -111,7 +121,10 @@ function Visualizer() {
   const sideSpace = isWide ? `${Math.max(0.05 * windowSize.width, 16)}px` : '10px'
   const betweenSpace = isWide ? `${Math.max(0.06 * windowSize.width, 32)}px` : '40px'
   const orbitMaxWidth = isWide ? 'clamp(320px, 70vw, 1200px)' : 'clamp(200px, 98vw, 750px)';
-  const cardMaxWidth = isWide ? 'clamp(320px, 28vw, 540px)' : 'clamp(200px, 70vw, 500px)';
+  // Set card max width to always maintain a 5:8 ratio with its height
+  // We'll use 5/8 of the orbit height as the max width for the card
+  const orbitHeight = isWide ? 0.8 * windowSize.height : Math.max(windowSize.height * 0.5, 340); // matches orbit div height
+  const cardMaxWidth = `min(${Math.round((orbitHeight * 5) / 8)}px, 90vw, 540px)`;
   const sharedMinWidth = isWide ? '340px' : '100px';
   const cardMinWidth = isWide ? '240px' : '100px'
 
@@ -142,6 +155,7 @@ function Visualizer() {
           minWidth: sharedMinWidth,
           width: '100%',
           height: isWide ? '80vh' : 'clamp(340px, 50vh, 800px)',
+          paddingBottom : isWide ? '0' : '5vh',
           maxHeight: '1000px',
           display: 'flex',
           flexDirection: 'column',
@@ -200,6 +214,7 @@ function Visualizer() {
           overflowWrap: 'break-word',
           wordBreak: 'break-word',
           whiteSpace: 'normal',
+          aspectRatio: '5 / 8', // Enforce the 5:8 ratio if supported
         }}
       >
         <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.7rem', color: 'white', opacity: 1 }}>
@@ -233,11 +248,27 @@ function Visualizer() {
         <div style={{ fontSize: '1.1rem', color: 'white', fontWeight: 500 }}>
           {topArtist}
         </div>
+        {mostPopular && (
+          <div style={{ fontSize: '1.1rem', color: '#FFD700', fontWeight: 600, marginTop: '1.2rem' }}>
+            Most Popular Song: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
+            <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginLeft: 8 }}>
+              (popularity {mostPopular.popularity})
+            </span>
+          </div>
+        )}
+        {leastPopular && (
+          <div style={{ fontSize: '1.1rem', color: '#FF6F61', fontWeight: 600, marginTop: '0.7rem' }}>
+            Least Popular Song: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
+            <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginLeft: 8 }}>
+              (popularity {leastPopular.popularity})
+            </span>
+          </div>
+        )}
         {obscurity !== null && (
-  <div style={{ fontSize: '1.1rem', color: '#1DB954', fontWeight: 600, marginTop: '1.2rem' }}>
-    Obscurity Rating: {obscurity}%
-    <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginLeft: 8 }}>
-      (higher = more obscure taste)
+          <div style={{ fontSize: '1.1rem', color: '#1DB954', fontWeight: 600, marginTop: '1.2rem' }}>
+            Obscurity Rating: {obscurity}%
+            <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', marginLeft: 8 }}>
+              (higher = more obscure taste)
     </span>
   </div>
 )}
