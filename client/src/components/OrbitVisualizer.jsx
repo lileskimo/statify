@@ -208,7 +208,7 @@ function OrbitVisualizer({ tracks, genres, topGenre, isWide }) {
           {track.genre.charAt(0).toUpperCase() + track.genre.slice(1)}
         </div>
         <div style={{ fontSize: '16px' }}>
-          <span style={{ color: '#1DB954', fontWeight: '600' }}>Score: </span>
+          <span style={{ color: '#1DB954', fontWeight: '600' }}>ListenScore: </span>
           {track.listenScore}
         </div>
         {track.external_urls?.spotify && (

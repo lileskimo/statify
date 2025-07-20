@@ -71,8 +71,8 @@ export default async function handler(req, res) {
     // Calculate listenScore and build final tracks array
     const finalTracks = Object.values(trackMap).map(track => {
       const listenScore = Math.round(
-        0.3 * (100 - track.short_rank) +
-        0.35 * (100 - track.medium_rank) +
+        0.2 * (100 - track.short_rank) +
+        0.45 * (100 - track.medium_rank) +
         0.35 * (100 - track.long_rank)
       )
       return {

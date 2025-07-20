@@ -23,7 +23,7 @@ function ListenScoreInfo() {
         userSelect: 'text'
       }}
     >
-      Score = 0.3 × (100 - short-term rank) + 0.35 × (100 - medium-term rank) + 0.35 × (100 - long-term rank)
+      ListenScore = 0.2 × (100 - short-term rank) + 0.45 × (100 - medium-term rank) + 0.35 × (100 - long-term rank)
     </div>
   );
 }
@@ -398,7 +398,7 @@ function Visualizer() {
                   Obscurity Rating: {obscurity}%
                 </div>
                 <div style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', fontStyle: 'italic' }}>
-                  *higher = more obscure taste
+                  *higher rating = less mainstream taste
                 </div>
               </div>
             )}
@@ -489,7 +489,7 @@ function Visualizer() {
                   Obscurity Rating: {obscurity}%
                 </div>
                 <div style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '1rem', fontStyle: 'italic' }}>
-                  *higher = more obscure taste
+                  *higher rating = less mainstream taste
                 </div>
               </div>
             )}
@@ -499,7 +499,7 @@ function Visualizer() {
                 <div style={{ fontSize: '1.08rem', color: '#FFD700', fontWeight: 600 }}>
                   Most Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{mostPopular.name} by {mostPopular.artistName}</span>
                   <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
-                    (popularity {mostPopular.popularity})
+                    (popularity : {mostPopular.popularity})
                   </span>
                 </div>
               )}
@@ -507,7 +507,7 @@ function Visualizer() {
                 <div style={{ fontSize: '1.08rem', color: '#FF6F61', fontWeight: 600 }}>
                   Least Popular: <span style={{ color: '#fff', fontWeight: 500 }}>{leastPopular.name} by {leastPopular.artistName}</span>
                   <span style={{ color: '#b3b3b3', fontWeight: 400, fontSize: '0.98rem', marginLeft: 8 }}>
-                    (popularity {leastPopular.popularity})
+                    (popularity : {leastPopular.popularity})
                   </span>
                 </div>
               )}
