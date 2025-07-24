@@ -74,7 +74,7 @@ export default function WrappedPredictor() {
         Wrapped Predictor <span style={{ fontWeight: 400, fontSize: '1.2rem' }}>(Statify Forecast)</span>
       </h2>
       <div style={{ color: '#b3b3b3', fontSize: '1.1rem', marginBottom: '1.5rem', textAlign: 'center', maxWidth: 600 }}>
-        A sneak peek at your Spotify Wrapped top tracks
+        A sneak peek at your predicted Spotify Wrapped top tracks
         </div>
       <div style={{
         flex: 1,
@@ -114,7 +114,6 @@ export default function WrappedPredictor() {
               <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
                 <div style={{ fontWeight: 600, fontSize: '1.1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.name}</div>
                 <div style={{ color: '#b3b3b3', fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Artist: {track.artistName}</div>
-                <div style={{ color: '#b3b3b3', fontSize: '1rem' }}>Genre: {track.genre}</div>
                 <div style={{ color: '#1DB954', fontSize: '1rem', fontWeight: 600 }}>Predicted Score: {track.predictedScore.toFixed(2)}</div>
                 <span className="spotify-btn-mobile" style={{ display: 'none' }}>
                   {track.external_urls?.spotify && (
