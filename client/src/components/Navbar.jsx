@@ -21,7 +21,27 @@ function Navbar() {
   }
 
   return (
-    <nav className="navbar" style={{ position: 'relative', zIndex: 200 }}>
+    <nav
+      className="navbar"
+      style={{
+        position: 'relative',
+        zIndex: 200,
+        background: 'rgba(24, 24, 24, 0.72)', 
+        borderRadius: '22px', 
+        boxShadow: '0 4px 24px rgba(0,0,0,0.18)', 
+        margin: '18px auto 0 auto', 
+        maxWidth: '1200px',
+        width: 'calc(100vw - 32px)',
+        padding: '0.5rem 2.5vw', 
+        backdropFilter: 'blur(8px)', 
+        WebkitBackdropFilter: 'blur(8px)',
+        border: '1.5px solid rgba(60,60,60,0.18)',
+        transition: 'background 0.3s, box-shadow 0.3s',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
       {isMobile ? (
         <>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>

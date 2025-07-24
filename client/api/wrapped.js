@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   try {
     // Fetch top tracks for all time ranges
     const [short, medium, long] = await Promise.all([
-      spotifyApi.getMyTopTracks({ time_range: 'short_term', limit: 25 }),
+      spotifyApi.getMyTopTracks({ time_range: 'short_term', limit: 50 }),
       spotifyApi.getMyTopTracks({ time_range: 'medium_term', limit: 50 }),
       spotifyApi.getMyTopTracks({ time_range: 'long_term', limit: 25 })
     ])
