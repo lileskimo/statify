@@ -116,9 +116,6 @@ export default function WrappedPredictor() {
                 <div style={{ color: '#b3b3b3', fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Artist: {track.artistName}</div>
                 <div style={{ color: '#b3b3b3', fontSize: '1rem' }}>Genre: {track.genre}</div>
                 <div style={{ color: '#1DB954', fontSize: '1rem', fontWeight: 600 }}>Predicted Score: {track.predictedScore.toFixed(2)}</div>
-                <div style={{ color: '#888', fontSize: '0.95rem' }}>
-                  <span>Medium: {track.medium}</span> | <span>Long: {track.long}</span> | <span>Short: {track.short}</span>
-                </div>
                 <span className="spotify-btn-mobile" style={{ display: 'none' }}>
                   {track.external_urls?.spotify && (
                     <a
