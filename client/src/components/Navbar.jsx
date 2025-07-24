@@ -71,7 +71,7 @@ function Navbar() {
           {menuOpen && (
             <div style={{
               position: 'absolute',
-              top: 'calc(100% + 10px)',
+              top: 'calc(100% + 2vh)', // increased gap below navbar
               left: 0,
               right: 0,
               background: 'linear-gradient(120deg, rgba(34, 40, 49, 0.32) 0%, rgba(24, 24, 24, 0.48) 100%)',
