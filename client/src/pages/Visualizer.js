@@ -395,9 +395,9 @@ function Visualizer() {
                     (loading...)
                   </div>
                 ) : (
-                  topArtists.map((artist, i) => (
+                  topArtists.map((artist) => (
                     <div key={artist.id} style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center', marginBottom: '0.18em' }}>
-                      {i + 1}. {artist.name}
+                      {artist.name}
                     </div>
                   ))
                 )}
@@ -468,39 +468,54 @@ function Visualizer() {
                 ))}
               </div>
             </div>
-            {/* Top Genres */}
-            <div style={{ marginBottom: '1.2rem', textAlign: 'center' }}>
-              <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem' }}>
-                Top Genres
-              </div>
-              {topGenres.map((g, i) => (
-                <div
-                  key={g}
-                  style={{
-                    color: getGenreColor(g),
-                    marginBottom: '0.18em',
-                    fontWeight: 500,
-                    fontSize: '1.05rem',
-                    textAlign: 'center'
-                  }}>{g}</div>
-              ))}
-            </div>
-            {/* Top Artist(s) */}
-            <div style={{ marginBottom: '1.2rem', textAlign: 'center' }}>
-              <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem' }}>
-                Top Artists
-              </div>
-              {topArtists.length === 0 ? (
-                <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center' }}>
-                  (loading...)
+            {/* Top Genres & Top Artists Row */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: '1.2rem',
+              flexWrap: 'nowrap',
+              width: '100%',
+              gap: 0,
+            }}>
+              {/* Top Genres */}
+              <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
+                  Top Genres
                 </div>
-              ) : (
-                topArtists.map((artist, i) => (
-                  <div key={artist.id} style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center', marginBottom: '0.18em' }}>
-                    {i + 1}. {artist.name}
+                {topGenres.map((g) => (
+                  <div
+                    key={g}
+                    style={{
+                      color: getGenreColor(g),
+                      marginBottom: '0.18em',
+                      fontWeight: 500,
+                      fontSize: '1.05rem',
+                      textAlign: 'center',
+                      wordBreak: 'break-word'
+                    }}>{g}</div>
+                ))}
+              </div>
+              {/* Vertical Separator */}
+              <div style={{ width: 2, minWidth: 2, maxWidth: 2, height: '70%', alignSelf: 'center', background: '#b3b3b3', margin: '0 0.4rem', borderRadius: 1 }} />
+              {/* Top Artists */}
+              <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
+                  Top Artists
+                </div>
+                {topArtists.length === 0 ? (
+                  <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center' }}>
+                    (loading...)
                   </div>
-                ))
-              )}
+                ) : (
+                  topArtists.map((artist) => (
+                    <div key={artist.id} style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center', marginBottom: '0.18em' }}>
+                      {artist.name}
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
             {/* Obscurity Score */}
             {obscurity !== null && (
