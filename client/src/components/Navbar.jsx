@@ -71,12 +71,12 @@ function Navbar() {
           {menuOpen && (
             <div style={{
               position: 'absolute',
-              top: '100%',
+              top: 'calc(100% + 10px)',
               left: 0,
               right: 0,
               background: 'linear-gradient(120deg, rgba(34, 40, 49, 0.32) 0%, rgba(24, 24, 24, 0.48) 100%)',
               border: '2px solid rgba(255,255,255,0.22)',
-              borderRadius: '0 0 22px 22px',
+              borderRadius: '22px',
               boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(30,255,180,0.08)',
               backdropFilter: 'blur(28px) saturate(180%)',
               WebkitBackdropFilter: 'blur(28px) saturate(180%)',
