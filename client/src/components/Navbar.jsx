@@ -70,9 +70,13 @@ function Navbar() {
               <Link to="/recent" style={{ color: '#fff', fontWeight: 500, fontSize: '1.1rem' }} onClick={() => setMenuOpen(false)}>
                 Recently Played
               </Link>
+              <Link to="/wrapped-predictor" style={{ color: '#fff', fontWeight: 500, fontSize: '1.1rem' }} onClick={() => setMenuOpen(false)}>
+                Wrapped Predictor
+              </Link>
               <Link to="/info" style={{ color: '#fff', fontWeight: 500, fontSize: '1.1rem' }} onClick={() => setMenuOpen(false)}>
                 Info
               </Link>
+              
               {token && (
                 <button
                   onClick={() => { setMenuOpen(false); handleLogout(); }}
@@ -110,9 +114,13 @@ function Navbar() {
             <Link to="/recent" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
               Recently Played
             </Link>
+            <Link to="/wrapped-predictor" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
+              Wrapped Predictor
+            </Link>
             <Link to="/info" style={{ color: '#fff', fontWeight: 500, fontSize: '1rem' }}>
               Info
             </Link>
+            
           </div>
           <div style={{ fontSize: '1rem', color: '#b3b3b3', fontWeight: 400 }}>
             {token && (

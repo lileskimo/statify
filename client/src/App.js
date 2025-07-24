@@ -10,6 +10,7 @@ import './App.css'
 import { Canvas } from '@react-three/fiber'
 import { Stars } from '@react-three/drei'
 import React from 'react'
+import WrappedPredictor from './pages/WrappedPredictor'
 
 function SpaceBackground() {
   return (
@@ -80,6 +81,7 @@ function App() {
             <Route path="/topsongs" element={<TopSongs />} />
             <Route path="/recent" element={<Recent />} /> {/* Add this line */}
             <Route path="/info" element={<Info />} />
+            <Route path="/wrapped-predictor" element={<WrappedPredictor />} />
           </Routes>
         </main>
         <footer

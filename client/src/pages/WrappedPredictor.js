@@ -1,51 +1,40 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-function TopSongs() {
-  const [tracks, setTracks] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const navigate = useNavigate()
+export default function WrappedPredictor() {
+  const [tracks, setTracks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!sessionStorage.getItem('spotify_access_token')) {
-      navigate('/')
+      navigate('/');
     }
-  }, [navigate])
+  }, [navigate]);
 
   useEffect(() => {
-    const token = sessionStorage.getItem('spotify_access_token')
+    const token = sessionStorage.getItem('spotify_access_token');
     if (!token) {
-      setError('You must be logged in.')
-      setLoading(false)
-      return
+      setError('You must be logged in.');
+      setLoading(false);
+      return;
     }
 
-    axios.get(`/api/tracks`, { headers: { Authorization: `Bearer ${token}` } })
+    axios.get('/api/wrapped', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
-        setTracks(res.data.tracks) 
-        setLoading(false)
+        setTracks(res.data.tracks);
+        setLoading(false);
       })
       .catch(() => {
-        setError('Failed to fetch top tracks.')
-        setLoading(false)
-      })
-  }, [])
+        setError('Failed to fetch tracks for prediction.');
+        setLoading(false);
+      });
+  }, []);
 
   if (loading) return (
-    <div style={{
-      color: '#fff',
-      textAlign: 'center',
-      marginTop: '4rem',
-      fontSize: '1.5rem',
-      fontWeight: 600,
-      letterSpacing: '0.03em',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '1.5rem'
-    }}>
+    <div style={{ color: '#fff', textAlign: 'center', marginTop: '4rem' }}>
       <div className="loader" style={{
         border: '6px solid #222',
         borderTop: '6px solid #1DB954',
@@ -55,55 +44,38 @@ function TopSongs() {
         animation: 'spin 1s linear infinite',
         margin: '0 auto'
       }} />
-      <span>Loading your top Spotify tracks…</span>
-      <style>
-        {`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}
-      </style>
+      <span>Predicting your Wrapped…</span>
+      <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
     </div>
-  )
+  );
   if (error) return (
-    <div style={{
-      color: '#fff',
-      background: 'linear-gradient(90deg, #e03d00 0%, #ff6b6b 100%)',
-      textAlign: 'center',
-      marginTop: '4rem',
-      fontSize: '1.3rem',
-      fontWeight: 600,
-      borderRadius: 12,
-      padding: '1.5rem 2rem',
-      boxShadow: '0 4px 24px rgba(0,0,0,0.18)',
-      maxWidth: 420,
-      marginLeft: 'auto',
-      marginRight: 'auto'
-    }}>
-      <span role="img" aria-label="error" style={{ fontSize: '2rem', marginRight: 10 }}>⚠️</span>
-      {error}
-    </div>
-  )
+    <div style={{ color: '#fff', background: '#e03d00', textAlign: 'center', marginTop: '4rem', padding: '1.5rem', borderRadius: 12 }}>{error}</div>
+  );
 
   return (
-    <div
-      style={{
-        maxWidth: '90vw',
-        width: '100%',
-        margin: '3rem auto',
-        background: 'rgba(28,28,30,0.95)',
-        borderRadius: 18,
-        padding: 'clamp(1.2rem, 5vw, 2.5rem) clamp(0.5rem, 4vw, 2rem)',
-        color: '#fff',
-        boxShadow: '0 6px 28px rgba(0,0,0,0.25)',
-        minHeight: '60vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        boxSizing: 'border-box',
-      }}
-    >
+    <div style={{
+      maxWidth: '90vw',
+      width: '100%',
+      margin: '3rem auto',
+      background: 'rgba(28,28,30,0.95)',
+      borderRadius: 18,
+      padding: 'clamp(1.2rem, 5vw, 2.5rem) clamp(0.5rem, 4vw, 2rem)',
+      color: '#fff',
+      boxShadow: '0 6px 28px rgba(0,0,0,0.25)',
+      minHeight: '60vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+      boxSizing: 'border-box',
+    }}>
       <h2 style={{ fontSize: 'clamp(1.3rem, 6vw, 2.2rem)', fontWeight: 700, marginBottom: '2rem', textAlign: 'center' }}>
-        Your Top Spotify Songs <span style={{ fontWeight: 400, fontSize: '1.2rem' }}>(Past Year)</span>
+        Wrapped Predictor <span style={{ fontWeight: 400, fontSize: '1.2rem' }}>(Statify Forecast)</span>
       </h2>
+      <div style={{ color: '#b3b3b3', fontSize: '1.1rem', marginBottom: '1.5rem', textAlign: 'center', maxWidth: 600 }}>
+        A sneak peek at your Spotify Wrapped top tracks
+        </div>
       <div style={{
         flex: 1,
         overflowY: 'auto',
@@ -143,7 +115,10 @@ function TopSongs() {
                 <div style={{ fontWeight: 600, fontSize: '1.1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.name}</div>
                 <div style={{ color: '#b3b3b3', fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Artist: {track.artistName}</div>
                 <div style={{ color: '#b3b3b3', fontSize: '1rem' }}>Genre: {track.genre}</div>
-                <div style={{ color: '#888', fontSize: '0.95rem' }}>ListenScore: {track.listenScore}</div>
+                <div style={{ color: '#1DB954', fontSize: '1rem', fontWeight: 600 }}>Predicted Score: {track.predictedScore.toFixed(2)}</div>
+                <div style={{ color: '#888', fontSize: '0.95rem' }}>
+                  <span>Medium: {track.medium}</span> | <span>Long: {track.long}</span> | <span>Short: {track.short}</span>
+                </div>
                 <span className="spotify-btn-mobile" style={{ display: 'none' }}>
                   {track.external_urls?.spotify && (
                     <a
@@ -206,7 +181,5 @@ function TopSongs() {
         }
       `}</style>
     </div>
-  )
-}
-
-export default TopSongs
+  );
+} 
