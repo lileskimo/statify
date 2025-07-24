@@ -276,7 +276,7 @@ function Visualizer() {
           padding: '2.2rem 2.5rem',
           borderRadius: isDownloadMode ? '0px' : '22px',
           background: isDownloadMode
-            ? 'linear-gradient(135deg,rgb(42, 57, 47) 0%, #23242a 55%,rgb(22, 93, 47) 100%)'
+            ? 'linear-gradient(135deg,rgb(23, 35, 23) 0%,rgb(22, 93, 47) 100%)'
             : 'linear-gradient(135deg, rgba(40,40,48,0.96) 60%, rgba(30,60,60,0.98) 100%)',
           border: isDownloadMode
             ? '2px solid #23242a'
