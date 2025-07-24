@@ -74,13 +74,18 @@ function Navbar() {
               top: '100%',
               left: 0,
               right: 0,
-              background: 'rgba(24,24,24,0.98)',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.18)',
+              background: 'linear-gradient(120deg, rgba(34, 40, 49, 0.32) 0%, rgba(24, 24, 24, 0.48) 100%)',
+              border: '2px solid rgba(255,255,255,0.22)',
+              borderRadius: '0 0 22px 22px',
+              boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(30,255,180,0.08)',
+              backdropFilter: 'blur(28px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(28px) saturate(180%)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'flex-start',
               padding: '1rem 1.5rem',
               gap: '1rem',
+              zIndex: 300,
             }}>
               <Link to="/" style={{ color: '#fff', fontWeight: 500, fontSize: '1.1rem' }} onClick={() => setMenuOpen(false)}>
                 Home
