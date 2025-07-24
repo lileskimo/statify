@@ -74,7 +74,7 @@ function Navbar() {
               top: 'calc(100% + 2vh)', // increased gap below navbar
               left: 0,
               right: 0,
-              background: 'linear-gradient(120deg, rgba(34, 40, 49, 0.32) 0%, rgba(24, 24, 24, 0.48) 100%)',
+              background: 'linear-gradient(120deg, rgba(34, 40, 49, 0.88) 0%, rgba(24, 24, 24, 0.96) 100%)',
               border: '2px solid rgba(255,255,255,0.22)',
               borderRadius: '22px',
               boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 1.5px 8px 0 rgba(30,255,180,0.08)',
