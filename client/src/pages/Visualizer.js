@@ -34,7 +34,7 @@ function Visualizer() {
   const [genres, setGenres] = useState([])
   const [topGenres, setTopGenres] = useState([])
   const [topSongs, setTopSongs] = useState([])
-  const [topArtist, setTopArtist] = useState('')
+  const [topArtists, setTopArtists] = useState([])
   const [userName, setUserName] = useState('Your')
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight })
   const [obscurity, setObscurity] = useState(null)
@@ -98,17 +98,21 @@ function Visualizer() {
 
         // Top songs (by listenScore)
         setTopSongs(finalTracks.slice(0, 3).map(t => `${t.name} by ${t.artistName}`))
-
-        // Top artist (most frequent in top tracks)
-        const artistCounts = {}
-        finalTracks.forEach(track => {
-          artistCounts[track.artistName] = (artistCounts[track.artistName] || 0) + 1
-        })
-        const sortedArtists = Object.entries(artistCounts).sort((a, b) => b[1] - a[1])
-        setTopArtist(sortedArtists.length ? sortedArtists[0][0] : '')
       })
       .catch((err) => {
         console.error('Fetch error:', err)
+      })
+
+    // Fetch top artists from backend
+    axios.get(`/api/artists`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => {
+        // Use top 3 artists by predictedScore
+        setTopArtists(res.data.artists.slice(0, 3))
+      })
+      .catch((err) => {
+        console.error('Artist fetch error:', err)
       })
   }, [])
 
@@ -381,14 +385,22 @@ function Visualizer() {
               </div>
               {/* Vertical Separator */}
               <div style={{ width: 2, minWidth: 2, maxWidth: 2, height: '70%', alignSelf: 'center', background: '#b3b3b3', margin: '0 0.4rem', borderRadius: 1 }} />
-              {/* Top Artist */}
+              {/* Top Artist(s) */}
               <div style={{ width: '47%', minWidth: 0, wordBreak: 'break-word', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                 <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem', textAlign: 'center' }}>
-                  Top Artist
+                  Top Artists
                 </div>
-                <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center', wordBreak: 'break-word' }}>
-                  {topArtist}
-                </div>
+                {topArtists.length === 0 ? (
+                  <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center' }}>
+                    (loading...)
+                  </div>
+                ) : (
+                  topArtists.map((artist, i) => (
+                    <div key={artist.id} style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center', marginBottom: '0.18em' }}>
+                      {i + 1}. {artist.name}
+                    </div>
+                  ))
+                )}
               </div>
             </div>
             {/* Obscurity Score (separate line) */}
@@ -473,14 +485,22 @@ function Visualizer() {
                   }}>{g}</div>
               ))}
             </div>
-            {/* Top Artist */}
+            {/* Top Artist(s) */}
             <div style={{ marginBottom: '1.2rem', textAlign: 'center' }}>
               <div style={{ fontSize: '1.13rem', fontWeight: 700, color: '#fff', marginBottom: '0.3rem' }}>
-                Top Artist
+                Top Artists
               </div>
-              <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center' }}>
-                {topArtist}
-              </div>
+              {topArtists.length === 0 ? (
+                <div style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center' }}>
+                  (loading...)
+                </div>
+              ) : (
+                topArtists.map((artist, i) => (
+                  <div key={artist.id} style={{ fontSize: '1.05rem', color: '#fff', fontWeight: 500, textAlign: 'center', marginBottom: '0.18em' }}>
+                    {i + 1}. {artist.name}
+                  </div>
+                ))
+              )}
             </div>
             {/* Obscurity Score */}
             {obscurity !== null && (
