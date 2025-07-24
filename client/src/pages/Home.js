@@ -34,6 +34,7 @@ export default function Home() {
         flexDirection: 'column',
         alignItems: 'center',
         position: 'relative',
+        marginRight: '4vw', 
       }}
     >
       {/* Announcement Bar */}
